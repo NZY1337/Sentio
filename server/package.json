@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-    "test": "vitest",
+        "test": "vitest",
         "start": "npx nodemon",
         "migrate": "npx prisma migrate dev --name",
         "studio": "npx prisma studio"
@@ -16,7 +16,8 @@
         "@aws-sdk/client-s3": "^3.750.0",
         "@aws-sdk/types": "^3.734.0",
         "@clerk/express": "^1.7.4",
-        "@prisma/client": "^5.22.0",
+        "@prisma/adapter-pg": "^7.3.0",
+        "@prisma/client": "^7.3.0",
         "@supabase/supabase-js": "^2.49.7",
         "@types/multer": "^1.4.12",
         "@types/nodemailer": "^6.4.14",
@@ -30,9 +31,10 @@
         "lodash": "^4.17.21",
         "micro": "^10.0.1",
         "multer": "^1.4.5-lts.1",
-        "nodemailer": "^6.9.15",
+        "nodemailer": "^8.0.1",
         "openai": "^4.100.0",
-        "prisma": "^5.19.1",
+        "pg": "^8.18.0",
+        "prisma": "^7.3.0",
         "socket.io": "^4.8.1",
         "svix": "^1.65.0",
         "typescript": "^5.6.2",
@@ -48,13 +50,13 @@
         "@types/jsonwebtoken": "^9.0.6",
         "@types/lodash": "^4.17.14",
         "@types/node": "^22.5.4",
+        "@types/pg": "^8.16.0",
         "axios": "^1.8.2",
         "install": "^0.13.0",
         "nodemon": "^3.1.4",
         "npm": "^11.2.0",
         "ts-node": "^10.9.2",
-        "tsx": "^4.19.1"
-    ,
-        "vitest": "^1.2.2"
+        "tsx": "^4.19.1",
+        "vitest": "^4.0.18"
     }
 }

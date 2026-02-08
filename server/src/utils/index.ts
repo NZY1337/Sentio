@@ -7,7 +7,6 @@ import type { FileLike } from "openai/uploads";
 import { BadRequestException, ErrorCode } from "../middlewares/errorMiddleware";
 
 
-export * from "./constCalculation";
 import { ImagesResponse } from "openai/resources/images";
 export * from "./uploadToSupabaseStorage";
 export * from "./constants";
