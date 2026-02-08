@@ -1,0 +1,150 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider  = "postgresql"
+    url       = env("DATABASE_URL")
+    directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+    admin
+    user
+}
+
+enum SpaceType {
+    LIVING_ROOM
+    BEDROOM
+    KITCHEN
+    BATHROOM
+    DINING_ROOM
+    HOME_OFFICE
+    KIDS_ROOM
+    HALLWAY_CORRIDOR
+    BALCONY_TERRACE
+    GAME_ROOM
+    STUDY
+}
+
+enum Category {
+    DESIGN_GENERATOR
+    DESIGN_EDITOR
+}
+
+enum DesignTheme {
+    MODERN
+    CONTEMPORARY
+    MINIMALIST
+    SCANDINAVIAN
+    INDUSTRIAL
+    MID_CENTURY_MODERN
+    TRADITIONAL
+    CLASSIC
+    BAROQUE
+    JAPANESE_ZEN
+    WABI_SABI
+    FARMHOUSE
+    RUSTIC
+    BOHEMIAN
+    ART_DECO
+    VICTORIAN
+    COASTAL
+    TROPICAL
+    URBAN
+    MAXIMALIST
+    FUTURISTIC
+}
+
+enum OutputFormat {
+    PNG
+    JPEG
+    WEBP
+}
+
+enum QualityFormat {
+    HIGH
+    MEDIUM
+    LOW
+}
+
+enum SizeImage {
+    SIZE_1024x1024
+    SIZE_1024x1536
+    SIZE_1536x1024
+    AUTO
+}
+
+enum GeneratedImagesCount {
+    ONE
+    TWO
+    THREE
+    FOUR
+    FIVE
+    SIX
+    SEVEN
+    EIGHT
+    NINE
+    TEN
+}
+
+model User {
+    id          String   @id @default(uuid())
+    username    String
+    email       String   @unique
+    role        Role     @default(user)
+    credits     Decimal  @default(0)
+    freeCredits Int      @default(5)
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    Project Project[] @relation("UserProjects")
+}
+
+model Project {
+    id           String        @id @default(uuid())
+    userId       String
+    prompt       String        @db.Text
+    category     Category      @default(DESIGN_GENERATOR)
+    designTheme  DesignTheme   @default(MODERN)
+    spaceType    SpaceType     @default(LIVING_ROOM)
+    size         SizeImage     @default(SIZE_1024x1024)
+    quality      QualityFormat @default(MEDIUM)
+    background   String        @default("auto")
+    outputFormat OutputFormat  @default(PNG)
+    n            Int           @default(1)
+    createdAt    DateTime      @default(now())
+    updatedAt    DateTime      @updatedAt
+
+    user     User                     @relation("UserProjects", fields: [userId], references: [id])
+    images   Image[]                  @relation("ProjectImages")
+    response ImageGenerationResponse? @relation("ImageGenerationResponse")
+
+    @@index([userId, category, designTheme, spaceType])
+}
+
+model ImageGenerationResponse {
+    id        String @id @default(uuid())
+    projectId String @unique
+
+    inputTokens  Int
+    imageTokens  Int
+    textTokens   Int
+    outputTokens Int
+    totalTokens  Int
+
+    imageCost Float
+    tokenCost Float
+    totalCost Float
+
+    project Project @relation(fields: [projectId], references: [id], name: "ImageGenerationResponse", onDelete: Cascade)
+}
+
+model Image {
+    id        String @id @default(uuid())
+    url       String
+    projectId String
+
+    createdAt DateTime @default(now())
+    project   Project  @relation("ProjectImages", fields: [projectId], references: [id], onDelete: Cascade)
+}
