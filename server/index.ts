@@ -5,7 +5,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { errorMiddleware } from "./src/middlewares/errorMiddleware";
 import { clerkWebhook } from "./src/webhooks/clerk";
-import { clerkMiddleware, getAuth } from "@clerk/express";
+import { clerkMiddleware, getAuth, requireAuth } from "@clerk/express";
 import rootRouter from "./src/routes";
 
 const app: Express = express();
@@ -33,11 +33,12 @@ app.get("/", (req, res) => {
         return res.status(400).json({ error: "Bad Request" });
     }
 
-    res.send("Hello World!");
+    res.json({ user: auth.userId });
 });
 
 app.post("/webhook", express.raw({ type: "application/json" }), clerkWebhook);
-app.use("/api", rootRouter);
+
+app.use("/api", requireAuth(), rootRouter);
 app.use(errorMiddleware);
 
 server.listen(PORT, () => console.log("App is working on port: " + PORT));

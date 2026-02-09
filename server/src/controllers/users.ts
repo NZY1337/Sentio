@@ -38,13 +38,14 @@ export const deleteUser = async (req: Request, res: Response) => {
         throw new BadRequestException(400, "Role or userId is required");
     }
 
-    const user = await clerkClient.users.deleteUser(userId);
-    res.status(200).json({ message: "User delete sucessfully!" });
+    await clerkClient.users.deleteUser(userId);
+    res.status(200).json({ message: "User deleted successfully!" });
 };
 
 export const getUserCredits = async (req: Request, res: Response) => {
     const userId = req.query.userId as string;
     console.log("userId: ", userId);
+
     if (!userId)
         throw new BadRequestException(ErrorCode.BAD_REQUEST, "userId Not Found");
 

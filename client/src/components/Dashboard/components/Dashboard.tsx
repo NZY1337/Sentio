@@ -2,7 +2,7 @@
 import { DashboardProvider } from '../context/dashboardContext';
 
 // hooks
-import { useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import { useColorScheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { useUser, useClerk, useAuth } from '@clerk/clerk-react';
@@ -34,7 +34,6 @@ import NotFoundPage from '../../NotFound/NotFoundPage';
 
 export default function Dashboard() {
     const navigate = useNavigate();
-    const divRef = useRef<HTMLDivElement>(null);
     const { user } = useUser();
     const { signOut } = useClerk();
 

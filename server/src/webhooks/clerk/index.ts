@@ -57,7 +57,7 @@ export const clerkWebhook = async (req: Request, res: Response) => {
             if (evt.type === "user.created") {
                 const { id, email_addresses, username, role, created_at, updated_at } = evt.data;
                 await clerkClient.users.updateUserMetadata(id, {
-                    publicMetadata: { role: "user" },
+                    publicMetadata: { role: Role.user },
                 });
 
                 console.log("User created:", id, email_addresses[0].email_address);
@@ -65,13 +65,19 @@ export const clerkWebhook = async (req: Request, res: Response) => {
                     id,
                     email: email_addresses[0].email_address,
                     username: username || null,
-                    role: Role.user,
+                    role: Role.user, // default role is user
                     createdAt: new Date(created_at),
                     updatedAt: new Date(updated_at),
                 };
 
-                await prismaClient.user.create({
-                    data: { ...user },
+                await prismaClient.user.upsert({
+                    where: { email: user.email },
+                    create: { ...user },
+                    update: {
+                        id: user.id,
+                        username: user.username,
+                        updatedAt: user.updatedAt,
+                    },
                 });
             }
 

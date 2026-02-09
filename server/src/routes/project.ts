@@ -7,14 +7,13 @@ import {
     updateProject,
     deleteProject 
 } from "../controllers/project";
-import { authMiddleware } from "../middlewares/authMiddleware";
 
 const projectRouter: Router = Router();
 
-projectRouter.get("/", authMiddleware, errorHandler(getProjects));
-projectRouter.get("/:projectId", authMiddleware, errorHandler(getProjectById));
-projectRouter.post("/", authMiddleware, errorHandler(createProject));
-projectRouter.put("/:projectId", authMiddleware, errorHandler(updateProject));
-projectRouter.delete("/:projectId", authMiddleware, errorHandler(deleteProject));
+projectRouter.get("/", errorHandler(getProjects));
+projectRouter.get("/:projectId", errorHandler(getProjectById));
+projectRouter.post("/", errorHandler(createProject));
+projectRouter.put("/:projectId", errorHandler(updateProject));
+projectRouter.delete("/:projectId", errorHandler(deleteProject));
 
 export default projectRouter;
