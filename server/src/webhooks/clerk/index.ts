@@ -14,7 +14,7 @@ export const clerkWebhook = async (req: Request, res: Response) => {
     console.log("🎯 Webhook endpoint hit!");
     console.log("Headers:", req.headers);
     console.log("Body type:", typeof req.body);
-    
+
     try {
         const wh = new Webhook(CLERK_WEBHOOK_SIGNING_SECRET);
         const svixId = req.headers["svix-id"];

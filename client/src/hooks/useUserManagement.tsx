@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getUsers, updateUserRole, deleteUser } from '../services/users'; // adjust import path
 import { useNotifications } from '@toolpad/core';
+import { useAuth } from '@clerk/clerk-react';
 
 import type { UserProps } from '../types'; // adjust import path
 
@@ -13,15 +14,23 @@ export const useUsersManagement = ({
 } = {}) => {
     const queryClient = useQueryClient();
     const notifications = useNotifications();
+    const { getToken } = useAuth();
 
     const { isPending, error, data: users, } = useQuery({
         queryKey: ['users'],
-        queryFn: getUsers,
+        queryFn: async () => {
+            const token = await getToken();
+            if (!token) throw new Error('No authentication token');
+            return getUsers(token);
+        },
     });
 
     const updateUserRoleMutation = useMutation({
-        mutationFn: ({ userId, role }: { userId: UserProps['id']; role: UserProps['role'] }) =>
-            updateUserRole(userId, role),
+        mutationFn: async ({ userId, role }: { userId: UserProps['id']; role: UserProps['role'] }) => {
+            const token = await getToken();
+            if (!token) throw new Error('No authentication token');
+            return updateUserRole(userId, role, token);
+        },
 
         onMutate: async ({ userId, role }) => {
             await queryClient.cancelQueries({ queryKey: ['users'] });
@@ -47,7 +56,11 @@ export const useUsersManagement = ({
     });
 
     const deleteUserMutation = useMutation({
-        mutationFn: (userId: string) => deleteUser(userId),
+        mutationFn: async (userId: string) => {
+            const token = await getToken();
+            if (!token) throw new Error('No authentication token');
+            return deleteUser(userId, token);
+        },
 
         onMutate: async (userId: string) => {
             await queryClient.cancelQueries({ queryKey: ['users'] });

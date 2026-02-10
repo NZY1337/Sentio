@@ -5,10 +5,10 @@ import { BadRequestException, ErrorCode } from "../middlewares/errorMiddleware";
 import { Decimal } from "@prisma/client/runtime/library";
 
 /**
- * Updates a user's public metadata in Clerk.
+ * Updates a user's private metadata in Clerk.
  *
  * @param userId - The Clerk user ID (e.g., 'user_abc123')
- * @param metadata - An object with public metadata to update (e.g., { role: 'admin' })
+ * @param metadata - An object with private metadata to update (e.g., { role: 'admin' })
  * @returns The updated Clerk user object
  */
 
@@ -21,7 +21,7 @@ export const updateUserRole = async (req: Request, res: Response) => {
     }
 
     const user = await clerkClient.users.updateUserMetadata(userId, {
-        publicMetadata: { role: role },
+        privateMetadata: { role: role },
     });
     res.status(200).json(user);
 };

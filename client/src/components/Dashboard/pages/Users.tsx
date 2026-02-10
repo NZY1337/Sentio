@@ -49,6 +49,7 @@ export const Users = () => {
                         >
                             <MenuItem value="user">User</MenuItem>
                             <MenuItem value="admin">Admin</MenuItem>
+                            <MenuItem value="editor">Editor</MenuItem>
                         </Select>
                     </Box>
                 )

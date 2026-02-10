@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { Role } from "@prisma/client";
 
 export { };
 
@@ -8,6 +8,7 @@ declare global {
             auth: {
                 userId: string;
             }
+            userRoles?: Role[];
         }
     }
 }

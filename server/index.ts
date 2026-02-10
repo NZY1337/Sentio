@@ -23,17 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(clerkMiddleware());
 
 app.get("/", (req, res) => {
-    const auth = getAuth(req);
-    console.log(auth.userId, "from root");
-
-    if (!auth.userId) {
-        // User is not authenticated
-        // throw new BadRequestException(400, "Bad Request");}
-        // return res.redirect('/login');
-        return res.status(400).json({ error: "Bad Request" });
-    }
-
-    res.json({ user: auth.userId });
+    res.status(200).json({ status: "ok" });
 });
 
 app.post("/webhook", express.raw({ type: "application/json" }), clerkWebhook);
