@@ -11,10 +11,6 @@ import {
 
 export const getProjects = async (req: Request, res: Response) => {
     const projects = await prismaClient.project.findMany({
-        include: {
-            images: true,
-            response: true,
-        },
         where: {
             userId: req.auth.userId,
         },
@@ -31,10 +27,6 @@ export const getProjectById = async (req: Request, res: Response) => {
         where: {
             id: projectId,
             userId,
-        },
-        include: {
-            images: true,
-            response: true,
         },
     });
 
@@ -69,9 +61,6 @@ export const createProject = async (req: Request, res: Response) => {
             outputFormat: outputFormat || 'PNG',
             n: n || 1,
         },
-        include: {
-            images: true,
-        },
     });
 
     res.status(201).json({ project });
@@ -103,10 +92,6 @@ export const updateProject = async (req: Request, res: Response) => {
             id: projectId,
         },
         data: validationResult.data,
-        include: {
-            images: true,
-            response: true,
-        },
     });
 
     res.status(200).json({ project: updatedProject });
