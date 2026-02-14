@@ -1,7 +1,6 @@
 import { Box, Typography, Container, Button } from '@mui/material';
 import ArrowRight from '@mui/icons-material/ArrowRight';
-import Navigation from '../Navigation/Navigation';
-import hero from '../../assets/healthcare.png';
+import Navigation from '../navigation/Navigation';
 
 import { TypeAnimation } from 'react-type-animation';
 

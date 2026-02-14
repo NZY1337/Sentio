@@ -116,9 +116,15 @@ export const clerkWebhook = async (req: Request, res: Response) => {
             if (evt.type === "user.deleted") {
                 const { id } = evt.data;
                 console.log("---user-deleted");
-                await prismaClient.user.delete({
+                const userExists = await prismaClient.user.findUnique({
                     where: { id },
                 });
+                
+                if (userExists) {
+                    await prismaClient.user.delete({
+                        where: { id },
+                    });
+                }
             }
         } catch (error) {
             console.log(error);
