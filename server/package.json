@@ -7,8 +7,9 @@
         "test": "vitest",
         "test:integration": "vitest --config vitest.integration.config.ts",
         "start": "npx nodemon",
-        "migrate": "npx prisma migrate dev --name",
-        "studio": "npx prisma studio"
+        "migrate": "npx prisma migrate dev",
+        "studio": "npx prisma studio",
+        "generate": "npx prisma generate"
     },
     "keywords": [],
     "author": "",
@@ -19,7 +20,7 @@
         "@clerk/express": "^1.7.4",
         "@prisma/adapter-pg": "^7.3.0",
         "@prisma/client": "^7.3.0",
-        "@supabase/supabase-js": "^2.49.7",
+        "@supabase/supabase-js": "^2.49.7", 
         "@types/multer": "^1.4.12",
         "@types/nodemailer": "^6.4.14",
         "bcrypt": "^5.1.1",

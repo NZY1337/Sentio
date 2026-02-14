@@ -12,97 +12,12 @@ enum Role {
     editor
 }
 
-enum SpaceType {
-    LIVING_ROOM
-    BEDROOM
-    KITCHEN
-    BATHROOM
-    DINING_ROOM
-    HOME_OFFICE
-    KIDS_ROOM
-    HALLWAY_CORRIDOR
-    BALCONY_TERRACE
-    GAME_ROOM
-    STUDY
-}
-
-enum Category {
-    DESIGN_GENERATOR
-    DESIGN_EDITOR
-}
-
-enum DesignTheme {
-    MODERN
-    CONTEMPORARY
-    MINIMALIST
-    SCANDINAVIAN
-    INDUSTRIAL
-    MID_CENTURY_MODERN
-    TRADITIONAL
-    CLASSIC
-    BAROQUE
-    JAPANESE_ZEN
-    WABI_SABI
-    FARMHOUSE
-    RUSTIC
-    BOHEMIAN
-    ART_DECO
-    VICTORIAN
-    COASTAL
-    TROPICAL
-    URBAN
-    MAXIMALIST
-    FUTURISTIC
-}
-
-enum OutputFormat {
-    PNG
-    JPEG
-    WEBP
-}
-
-enum QualityFormat {
-    HIGH
-    MEDIUM
-    LOW
-}
-
-enum SizeImage {
-    SIZE_1024x1024
-    SIZE_1024x1536
-    SIZE_1536x1024
-    AUTO
-}
-
 model User {
     id          String   @id
     username    String
+    consent     Boolean  @default(false) 
     email       String   @unique
     role        Role     @default(user)
-    credits     Decimal  @default(0)
-    freeCredits Int      @default(5)
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
-
-    Project Project[] @relation("UserProjects")
-}
-
-model Project {
-    id           String        @id @default(uuid())
-    userId       String
-    prompt       String        @db.Text
-    category     Category      @default(DESIGN_GENERATOR)
-    designTheme  DesignTheme   @default(MODERN)
-    spaceType    SpaceType     @default(LIVING_ROOM)
-    size         SizeImage     @default(SIZE_1024x1024)
-    quality      QualityFormat @default(MEDIUM)
-    background   String        @default("auto")
-    outputFormat OutputFormat  @default(PNG)
-    n            Int           @default(1)
-    createdAt    DateTime      @default(now())
-    updatedAt    DateTime      @updatedAt
-
-    user User @relation("UserProjects", fields: [userId], references: [id], onDelete: Cascade)
-
-    @@index([userId, category, designTheme, spaceType])
 }

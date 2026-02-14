@@ -55,9 +55,9 @@ export const clerkWebhook = async (req: Request, res: Response) => {
             console.log("Received event:", evt.type);
             // Handle specific event types
             if (evt.type === "user.created") {
-                const { id, email_addresses, username, role, created_at, updated_at } = evt.data;
+                const { id, email_addresses, username, created_at, updated_at } = evt.data;
                 await clerkClient.users.updateUserMetadata(id, {
-                    publicMetadata: { role: Role.user },
+                    privateMetadata: { role: Role.user },
                 });
 
                 console.log("User created:", id, email_addresses[0].email_address);
@@ -87,24 +87,29 @@ export const clerkWebhook = async (req: Request, res: Response) => {
                     id,
                     email_addresses,
                     username,
-                    role,
                     created_at,
                     updated_at,
-                    public_metadata,
+                    private_metadata,
                 } = evt.data;
 
                 const user = {
                     id,
                     email: email_addresses[0].email_address,
                     username: username || null,
-                    role: public_metadata.role || Role.user,
+                    role: private_metadata.role || Role.user,
                     createdAt: new Date(created_at),
                     updatedAt: new Date(updated_at),
                 };
 
-                await prismaClient.user.update({
+                await prismaClient.user.upsert({
                     where: { id: user.id },
-                    data: { ...user },
+                    create: { ...user },
+                    update: {
+                        email: user.email,
+                        username: user.username,
+                        role: user.role,
+                        updatedAt: user.updatedAt,
+                    },
                 });
             }
 

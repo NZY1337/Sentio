@@ -12,6 +12,9 @@ const AppBarContainer = styled(AppBar)(({ theme }) => ({
     '.MuiToolbar-root': {
         display: 'flex', 
         justifyContent: 'space-between',
+        [theme.breakpoints.up('md')]: {
+            padding: 0
+        },
     },
 
     [theme.breakpoints.down('md')]: {
