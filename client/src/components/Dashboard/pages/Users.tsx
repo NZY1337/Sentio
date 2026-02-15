@@ -113,7 +113,7 @@ export const Users = () => {
     if (error) return <Container>{`An error has occurred: ${error.message}`}</Container>
 
     return (
-        <Container>
+        <Box>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <DataGrid
                     sx={{
@@ -139,6 +139,6 @@ export const Users = () => {
                     </Stack>
                 </>
             </GenericDialog>
-        </Container >
+        </Box >
     )
 }

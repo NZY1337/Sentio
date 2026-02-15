@@ -12,68 +12,6 @@ enum Role {
     editor
 }
 
-enum SpaceType {
-    LIVING_ROOM
-    BEDROOM
-    KITCHEN
-    BATHROOM
-    DINING_ROOM
-    HOME_OFFICE
-    KIDS_ROOM
-    HALLWAY_CORRIDOR
-    BALCONY_TERRACE
-    GAME_ROOM
-    STUDY
-}
-
-enum Category {
-    DESIGN_GENERATOR
-    DESIGN_EDITOR
-}
-
-enum DesignTheme {
-    MODERN
-    CONTEMPORARY
-    MINIMALIST
-    SCANDINAVIAN
-    INDUSTRIAL
-    MID_CENTURY_MODERN
-    TRADITIONAL
-    CLASSIC
-    BAROQUE
-    JAPANESE_ZEN
-    WABI_SABI
-    FARMHOUSE
-    RUSTIC
-    BOHEMIAN
-    ART_DECO
-    VICTORIAN
-    COASTAL
-    TROPICAL
-    URBAN
-    MAXIMALIST
-    FUTURISTIC
-}
-
-enum OutputFormat {
-    PNG
-    JPEG
-    WEBP
-}
-
-enum QualityFormat {
-    HIGH
-    MEDIUM
-    LOW
-}
-
-enum SizeImage {
-    SIZE_1024x1024
-    SIZE_1024x1536
-    SIZE_1536x1024
-    AUTO
-}
-
 model User {
     id          String   @id
     username    String
@@ -86,7 +24,6 @@ model User {
     journals  JournalEntry[]
     alerts    Alert[]
 }
-
 
 model JournalEntry {
   id         String    @id @default(uuid())
