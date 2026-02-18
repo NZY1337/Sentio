@@ -22,6 +22,7 @@ model JournalEntry {
     id        String             @id @default(uuid())
     userId    String
     content   String
+    status    String             @default("draft")
     createdAt DateTime           @default(now())
     embedding Float[]
     analysis  EmotionalAnalysis?

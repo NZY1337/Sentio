@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Typography, Card, CardContent, Box, Stack, Grid } from "@mui/material";
-import GDPRModal from '../../GDPRModal/index.';
+import ConsentModal from '../../ConsentModal/index.';
 import HeroCardWithImage, { HeroCardWithImage2 } from '../../HeroCard';
 import { mockUsers } from '../../../mockData';
 import { useUsersManagement } from '../../../hooks/useUserManagement';
-import Editor from '../components/editor/index';
+import Editor from '../components/Editor/index';
 import QuickStatsSection from '../components/QuickStatsSection';
 import MoodTrendChart from '../components/QuickStatsSection/Charts';
 
@@ -19,17 +19,17 @@ const cardsData = [
 ];
 
 const DashboardMain: React.FC = () => {
-    const [isGDPROpen, setIsGDPROpen] = useState(false);
+    const [isConsentModalOpen, setIsConsentModalOpen] = useState(false);
     const { user } = useUsersManagement();
 
-    const handleOpenGDPRModal = () => setIsGDPROpen(true);
+    const handleConsentModal = () => setIsConsentModalOpen(true);
     console.log(user?.consent)
     return (
         <Box>
-            {/* <ModernCardGrid /> */}
-            <GDPRModal open={isGDPROpen} setOpen={setIsGDPROpen} />
+            <ModernCardGrid />
+            <ConsentModal open={isConsentModalOpen} setOpen={setIsConsentModalOpen} />
 
-            {!user?.consent ? <HeroCardWithImage onClick={handleOpenGDPRModal} /> : null}
+            {!user?.consent ? <HeroCardWithImage onClick={handleConsentModal} /> : null}
 
             <Box >
                 <Box flex={1}>
@@ -98,8 +98,7 @@ const ModernCardGrid = () => {
                                     transform: "translateY(-8px)",
                                     cursor: 'pointer'
                                 },
-                            }}
-                        >
+                            }} >
                             <Box
                                 sx={{
                                     p: 3,

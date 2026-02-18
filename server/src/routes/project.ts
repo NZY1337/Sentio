@@ -11,20 +11,6 @@ import {
 
 const projectRouter: Router = Router();
 
-projectRouter.get("/", authorize("read"), errorHandler(getProjects));
-projectRouter.get("/:projectId", authorize("read"), errorHandler(getProjectById));
-projectRouter.post("/", authorize("create"), errorHandler(createProject));
-projectRouter.put(
-    "/:projectId",
-    authorize("update"),
-    requireProjectOwner,
-    errorHandler(updateProject)
-);
-projectRouter.delete(
-    "/:projectId",
-    authorize("delete"),
-    requireProjectOwner,
-    errorHandler(deleteProject)
-);
 
+// Project router removed. Use journal router instead.
 export default projectRouter;

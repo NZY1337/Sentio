@@ -1,10 +1,10 @@
 import { Router } from "express";
 import usersRouter from "./users";
-import projectRouter from "./project";
+import journalRouter from "./journal";
 
 const rootRouter: Router = Router();
 
 rootRouter.use("/users", usersRouter);
-rootRouter.use("/project", projectRouter);
+rootRouter.use("/journal", journalRouter);
 
 export default rootRouter;

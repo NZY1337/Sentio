@@ -11,7 +11,7 @@ import { useUser, useClerk, useAuth } from '@clerk/clerk-react';
 import DashboardTitle from './DashboardTitle';
 import DashboardFooter from './DashboardFooter';
 import Profile from '../pages/Profile';
-import Projects from '../pages/Projects';
+import Journal from '../pages/Journal';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { PageContainer } from '@toolpad/core/PageContainer';
 import { Users } from '../pages/Users';
@@ -84,8 +84,8 @@ export default function Dashboard() {
             case '/dashboard':
                 return <DashboardMain />;
 
-            case '/dashboard/projects':
-                return <Projects />;
+            case '/dashboard/journal':
+                return <Journal />;
 
             case '/dashboard/profile':
                 return <Profile />;

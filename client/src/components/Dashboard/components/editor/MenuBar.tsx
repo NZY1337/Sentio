@@ -18,7 +18,7 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
-import { menuBarStateSelector } from './menuBarState.js'
+import { menuBarStateSelector } from './menuBarState'
 
 export const MenuBar = ({ editor }: { editor: Editor | null }) => {
     if (!editor) {

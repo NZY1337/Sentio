@@ -2,10 +2,12 @@ import { BACKEND_URL } from '../../helpers/constants';
 
 export type CreateJournalEntryDto = {
     content: string;
+    status?: string;
 };
 
 export type UpdateJournalEntryDto = {
     content?: string;
+    status?: string;
 };
 
 const getJournalEntries = async (token: string) => {

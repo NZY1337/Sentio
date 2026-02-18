@@ -11,10 +11,10 @@ vi.mock('@tanstack/react-query', () => ({
   useQuery: ({ queryFn }: { queryFn: () => unknown }) => ({ data: queryFn(), isPending: false, error: null }),
 }))
 
-import useProjects from '../useProjects'
+import { useJournalEntries } from '../components/Dashboard/hooks/useJournal';
 
 const Dummy = () => {
-  const { data, isPending } = useProjects()
+  const { data, isPending } = useJournalEntries()
   return (
     <div>
       <span data-testid="pending">{String(isPending)}</span>
@@ -23,7 +23,7 @@ const Dummy = () => {
   )
 }
 
-describe('useProjects', () => {
+describe('useJournalEntries', () => {
   it('calls getProjects and returns data', () => {
     const { getByTestId } = render(<Dummy />)
     expect(getByTestId('len').textContent).toBe('1')

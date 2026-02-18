@@ -21,8 +21,8 @@ export const DASHBOARD_NAVIGATION: Navigation = [
         // ],
     },
     {
-        segment: 'dashboard/projects',
-        title: 'Projects',
+        segment: 'dashboard/journal',
+        title: 'Journal',
         icon: <FolderIcon />,
     },
     {

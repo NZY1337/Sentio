@@ -1,64 +1,33 @@
-import type { CategoryProps, DesignThemeProps, SpaceTypeProps, QualityFormatProps, OutputFormatProps, GeneratedImagesCountProps } from "./misc";
 
-// interface ApiResponse<T> {
-//     result: T;
-// }
-
-interface FetchedImage {
-    url: string;
-    id: string;
-    createdAt: string;
-    projectId: string;
-}
-
-interface UploadedImage {
-    file: File;
-    preview: string
-}
-
-export type Image = FetchedImage | UploadedImage;
-
-export interface ProjectProps {
+// Journal types
+export interface JournalEntry {
     id: string;
     userId: string;
-    category: CategoryProps;
+    content: string;
     createdAt: string;
-    updatedAt: string;
-    prompt: string;
-    background: string;
-    images: (Image | File)[];
-    outputFormat: OutputFormatProps;
-    quality: QualityFormatProps;
-    size: string;
-    designTheme: DesignThemeProps;
-    spaceType: SpaceTypeProps;
-    n: GeneratedImagesCountProps;
+    embedding: number[];
+    analysis?: EmotionalAnalysis;
 }
 
-// EditableProjectProps
-export type EditableProjectProps = Omit<ProjectProps, 'id' | 'userId' | 'createdAt' | 'updatedAt' | 'background'> &
-    Partial<Pick<ProjectProps, 'id' | 'userId' | 'createdAt' | 'updatedAt' | 'background'>>;
-
-export interface ImageGenerationResponseProps {
+export interface EmotionalAnalysis {
     id: string;
-    projectId: string;
-    inputTokens: number;
-    imageTokens: number;
-    textTokens: number;
-    outputTokens: number;
-    totalTokens: number;
-    imageCost: number;
-    tokenCost: number;
-    totalCost: number;
-    createdAt: string;
-    updatedAt: string;
+    journalEntryId: string;
+    dominantEmotion: string;
+    cognitiveDistortion?: string;
+    riskScore?: number;
 }
 
-export type ProjectResponseProps = {
-    project: ProjectProps;
-    images: ProjectImageProps[];
-    imageGenerationResponse: ImageGenerationResponseProps
-};
+export interface Alert {
+    id: string;
+    userId: string;
+    message: string;
+    level: string;
+    createdAt: string;
+}
 
-export type GridCell = null | { loading: true; generationId?: string } | ProjectProps
+export type JournalResponse = {
+    journal: JournalEntry;
+    analysis?: EmotionalAnalysis;
+    alerts?: Alert[];
+};
 

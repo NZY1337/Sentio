@@ -5,12 +5,12 @@ import GenericDialog from "../UtilityComponents/modals/GenericDialog";
 import { useUsersManagement } from "../../hooks/useUserManagement";
 import { useAuth } from "@clerk/clerk-react";
 
-interface GDPRModalInterface {
+interface ConsentModalProps {
     open: boolean;
     setOpen: (open: boolean) => void;
 }
 
-const GDPRModal = ({ open, setOpen }: GDPRModalInterface) => {
+const ConsentModal = ({ open, setOpen }: ConsentModalProps) => {
     const [disabled, setDisabled] = useState(true);
     const { userId } = useAuth();
     const { updateUserConsentMutation } = useUsersManagement();
@@ -121,4 +121,4 @@ const GDPRModal = ({ open, setOpen }: GDPRModalInterface) => {
 };
 
 
-export default GDPRModal;
+export default ConsentModal;
