@@ -6,52 +6,48 @@ datasource db {
     provider = "postgresql"
 }
 
+model User {
+    id        String         @id
+    username  String
+    email     String         @unique
+    role      Role           @default(user)
+    createdAt DateTime       @default(now())
+    updatedAt DateTime       @updatedAt
+    consent   Boolean?
+    alerts    Alert[]
+    journals  JournalEntry[]
+}
+
+model JournalEntry {
+    id        String             @id @default(uuid())
+    userId    String
+    content   String
+    createdAt DateTime           @default(now())
+    embedding Float[]
+    analysis  EmotionalAnalysis?
+    user      User               @relation(fields: [userId], references: [id])
+}
+
+model EmotionalAnalysis {
+    id                  String       @id @default(uuid())
+    journalEntryId      String       @unique
+    dominantEmotion     String
+    cognitiveDistortion String?
+    riskScore           Int?
+    journalEntry        JournalEntry @relation(fields: [journalEntryId], references: [id])
+}
+
+model Alert {
+    id        String   @id @default(uuid())
+    userId    String
+    message   String
+    level     String
+    createdAt DateTime @default(now())
+    user      User     @relation(fields: [userId], references: [id])
+}
+
 enum Role {
     admin
     user
     editor
-}
-
-model User {
-    id          String   @id
-    username    String
-    email       String   @unique
-    role        Role     @default(user)
-    consent      Boolean  @default(false)
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-
-    journals  JournalEntry[]
-    alerts    Alert[]
-}
-
-model JournalEntry {
-  id         String    @id @default(uuid())
-  userId     String
-  content    String
-  createdAt  DateTime  @default(now())
-  embedding  Float[]  
-
-  user       User   @relation(fields: [userId], references: [id])
-  analysis   EmotionalAnalysis?
-}
-
-model EmotionalAnalysis {
-  id                  String   @id @default(uuid())
-  journalEntryId      String   @unique
-  dominantEmotion     String
-  cognitiveDistortion String?
-  riskScore           Int?
-
-  journalEntry        JournalEntry @relation(fields: [journalEntryId], references: [id])
-}
-
-model Alert {
-  id        String   @id @default(uuid())
-  userId String
-  message   String
-  level     String   // ex: info, warning, critical
-  createdAt DateTime @default(now())
-
-  user   User @relation(fields: [userId], references: [id])
 }

@@ -5,6 +5,7 @@ export interface UserProps {
     freeCredits: number;
     email: string;
     username: string;
+    consent?: boolean;
     role: string;
     updatedAt: string;
     [key: string]: unknown; // Allow additional properties

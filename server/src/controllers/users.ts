@@ -11,19 +11,43 @@ import { BadRequestException, ErrorCode } from "../middlewares/errorMiddleware";
  * @returns The updated Clerk user object
  */
 
-// api/users/metadata/updateRole
+export const getUser = async (req: Request, res: Response) => {
+    const userId = req.auth?.userId;
+
+    const user = await prismaClient.user.findFirst({
+        where: { id: userId },
+    });
+
+    res.status(200).json(user);
+}
+
 export const updateUserRole = async (req: Request, res: Response) => {
     const { role, userId } = req.body;
 
     if (!role || !userId) {
-        throw new BadRequestException(400, "Role or userId is required");
+        throw new BadRequestException(ErrorCode.BAD_REQUEST, "Role or userId is required");
     }
 
-    const user = await clerkClient.users.updateUserMetadata(userId, {
-        privateMetadata: { role: role },
+    const user = await prismaClient.user.update({
+        where: { id: userId },
+        data: { role }
     });
+
     res.status(200).json(user);
 };
+
+export const updateConsentPolicy = async (req: Request, res: Response) => {
+    const { userId } = req.body;
+
+    if (!userId) throw new BadRequestException(ErrorCode.BAD_REQUEST, 'user not found');
+
+    await prismaClient.user.update({
+        where: { id: userId },
+        data: { consent: true }
+    });
+
+    res.status(200).json({ message: "User consent policy updated" });
+}
 
 export const getUsers = async (req: Request, res: Response) => {
     const users = await prismaClient.user.findMany();
@@ -34,7 +58,7 @@ export const deleteUser = async (req: Request, res: Response) => {
     const { userId } = req.body;
 
     if (!userId) {
-        throw new BadRequestException(400, "Role or userId is required");
+        throw new BadRequestException(ErrorCode.BAD_REQUEST, "Role or userId is required");
     }
 
     await clerkClient.users.deleteUser(userId);

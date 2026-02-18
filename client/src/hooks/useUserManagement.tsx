@@ -1,9 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getUsers, updateUserRole, deleteUser } from '../services/users'; // adjust import path
+import { getUser, getUsers, updateUserConsent, updateUserRole, deleteUser } from '../services/users';
 import { useNotifications } from '@toolpad/core';
 import { useAuth } from '@clerk/clerk-react';
 
-import type { UserProps } from '../types'; // adjust import path
+import type { UserProps } from '../types';
 
 export const useUsersManagement = ({
     onUserDeleted = () => { },
@@ -16,6 +16,15 @@ export const useUsersManagement = ({
     const notifications = useNotifications();
     const { getToken } = useAuth();
 
+    const { data: user } = useQuery({
+        queryKey: ['user'],
+        queryFn: async () => {
+            const token = await getToken();
+            if (!token) throw new Error('No authentication token');
+            return getUser(token);
+        },
+    });
+
     const { isPending, error, data: users, } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
@@ -24,6 +33,23 @@ export const useUsersManagement = ({
             return getUsers(token);
         },
     });
+
+    const updateUserConsentMutation = useMutation({
+        mutationFn: async ({ userId }: { userId: UserProps['id']; }) => {
+            const token = await getToken();
+            if (!token) throw new Error('No authentication token');
+            return updateUserConsent(userId, token);
+        },
+
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['user'] });
+            // toast('Role changed to ' + variables.role);
+            notifications.show('You are now eligible to continue', {
+                severity: 'success',
+                autoHideDuration: 3000
+            })
+        },
+    })
 
     const updateUserRoleMutation = useMutation({
         mutationFn: async ({ userId, role }: { userId: UserProps['id']; role: UserProps['role'] }) => {
@@ -96,9 +122,11 @@ export const useUsersManagement = ({
     });
 
     return {
+        user,
         users,
         isPending,
         error,
+        updateUserConsentMutation,
         updateUserRoleMutation,
         deleteUserMutation,
     };

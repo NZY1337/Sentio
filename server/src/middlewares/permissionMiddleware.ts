@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { getAuth, clerkClient } from "@clerk/express";
+import { getAuth } from "@clerk/express";
 import {
     ErrorCode,
     NotFoundException,
@@ -30,10 +30,12 @@ const resolveRoles = async (req: Request, userId: string) => {
         return req.userRoles;
     }
 
-    const user = await clerkClient.users.getUser(userId);
-    const roles = normalizeRoles(
-        user.privateMetadata?.role as string | string[] | null
-    );
+    const user = await prismaClient.user.findUnique({
+        where: { id: userId },
+        select: { role: true },
+    });
+
+    const roles = normalizeRoles(user?.role as string | string[] | null);
 
     req.userRoles = roles.length ? roles : [Role.user];
     return req.userRoles;
@@ -67,8 +69,6 @@ export const authorize = (action: ActionRole) => {
         }
     };
 };
-
-
 
 export const requireOwner = (
     getOwnerId: OwnerResolver,

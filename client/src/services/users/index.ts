@@ -1,11 +1,39 @@
 import { BACKEND_URL } from '../../helpers/constants';
 
+const getUser = async (token: string) => {
+    const response = await fetch(BACKEND_URL + '/users' + '/me', {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+}
+
 const getUsers = async (token: string) => {
     const response = await fetch(BACKEND_URL + '/users', {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     });
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+}
+
+const updateUserConsent = async (userId: string, token: string) => {
+    const response = await fetch(BACKEND_URL + '/users' + '/metadata/updateConsent', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ userId }),
+    });
+
     if (!response.ok) {
         throw new Error('Network response was not ok');
     }
@@ -44,21 +72,4 @@ const deleteUser = async (userId: string, token: string) => {
     return response.json();
 }
 
-const getUserCredits = async (userId: string, token: string) => {
-    const response = await fetch(`${BACKEND_URL}/users/credits?userId=${userId}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        }
-    });
-
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-
-    return response.json();
-}
-
-
-export { getUsers, updateUserRole, deleteUser, getUserCredits };
+export { getUser, getUsers, updateUserConsent, updateUserRole, deleteUser };

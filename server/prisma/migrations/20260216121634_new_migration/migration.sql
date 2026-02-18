@@ -1,29 +1,18 @@
-/*
-  Warnings:
-
-  - You are about to drop the column `consent` on the `User` table. All the data in the column will be lost.
-
-*/
 -- CreateEnum
-CREATE TYPE "SpaceType" AS ENUM ('LIVING_ROOM', 'BEDROOM', 'KITCHEN', 'BATHROOM', 'DINING_ROOM', 'HOME_OFFICE', 'KIDS_ROOM', 'HALLWAY_CORRIDOR', 'BALCONY_TERRACE', 'GAME_ROOM', 'STUDY');
+CREATE TYPE "Role" AS ENUM ('admin', 'user', 'editor');
 
--- CreateEnum
-CREATE TYPE "Category" AS ENUM ('DESIGN_GENERATOR', 'DESIGN_EDITOR');
+-- CreateTable
+CREATE TABLE "User" (
+    "id" TEXT NOT NULL,
+    "username" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "role" "Role" NOT NULL DEFAULT 'user',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "consent" BOOLEAN,
 
--- CreateEnum
-CREATE TYPE "DesignTheme" AS ENUM ('MODERN', 'CONTEMPORARY', 'MINIMALIST', 'SCANDINAVIAN', 'INDUSTRIAL', 'MID_CENTURY_MODERN', 'TRADITIONAL', 'CLASSIC', 'BAROQUE', 'JAPANESE_ZEN', 'WABI_SABI', 'FARMHOUSE', 'RUSTIC', 'BOHEMIAN', 'ART_DECO', 'VICTORIAN', 'COASTAL', 'TROPICAL', 'URBAN', 'MAXIMALIST', 'FUTURISTIC');
-
--- CreateEnum
-CREATE TYPE "OutputFormat" AS ENUM ('PNG', 'JPEG', 'WEBP');
-
--- CreateEnum
-CREATE TYPE "QualityFormat" AS ENUM ('HIGH', 'MEDIUM', 'LOW');
-
--- CreateEnum
-CREATE TYPE "SizeImage" AS ENUM ('SIZE_1024x1024', 'SIZE_1024x1536', 'SIZE_1536x1024', 'AUTO');
-
--- AlterTable
-ALTER TABLE "User" DROP COLUMN "consent";
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "JournalEntry" (
@@ -57,6 +46,9 @@ CREATE TABLE "Alert" (
 
     CONSTRAINT "Alert_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "EmotionalAnalysis_journalEntryId_key" ON "EmotionalAnalysis"("journalEntryId");

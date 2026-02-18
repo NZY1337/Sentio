@@ -1,4 +1,5 @@
 import './style.css'
+import { Box, Button } from '@mui/material'
 
 import { TextStyleKit } from '@tiptap/extension-text-style'
 import { EditorContent, useEditor } from '@tiptap/react'
@@ -41,11 +42,24 @@ export default () => {
     })
 
     return (
-        <div className="editor-container">
-            <div className="menu-bar">
-                <MenuBar editor={editor} />
-            </div>
-            <EditorContent editor={editor} />
-        </div>
+        <Box className="editor">
+            <Box className="editor-container">
+                <Box className="menu-bar">
+                    <MenuBar editor={editor} />
+                </Box>
+                <Box>
+                    <EditorContent editor={editor} />
+                </Box>
+            </Box>
+
+            <Box className="editor-footer" display="flex" gap={2}>
+                <Button variant='contained'>
+                    salveaza ca ciorna
+                </Button>
+                <Button variant='contained'>
+                    Trimite pt analiza
+                </Button>
+            </Box>
+        </Box >
     )
 }

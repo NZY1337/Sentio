@@ -56,9 +56,9 @@ export const clerkWebhook = async (req: Request, res: Response) => {
             // Handle specific event types
             if (evt.type === "user.created") {
                 const { id, email_addresses, username, created_at, updated_at } = evt.data;
-                await clerkClient.users.updateUserMetadata(id, {
-                    privateMetadata: { role: Role.user },
-                });
+                // await clerkClient.users.updateUserMetadata(id, {
+                //     privateMetadata: { role: Role.user },
+                // });
 
                 console.log("User created:", id, email_addresses[0].email_address);
                 const user = {
@@ -96,7 +96,6 @@ export const clerkWebhook = async (req: Request, res: Response) => {
                     id,
                     email: email_addresses[0].email_address,
                     username: username || null,
-                    role: private_metadata.role || Role.user,
                     createdAt: new Date(created_at),
                     updatedAt: new Date(updated_at),
                 };
@@ -107,7 +106,6 @@ export const clerkWebhook = async (req: Request, res: Response) => {
                     update: {
                         email: user.email,
                         username: user.username,
-                        role: user.role,
                         updatedAt: user.updatedAt,
                     },
                 });
@@ -115,11 +113,10 @@ export const clerkWebhook = async (req: Request, res: Response) => {
 
             if (evt.type === "user.deleted") {
                 const { id } = evt.data;
-                console.log("---user-deleted");
                 const userExists = await prismaClient.user.findUnique({
                     where: { id },
                 });
-                
+
                 if (userExists) {
                     await prismaClient.user.delete({
                         where: { id },

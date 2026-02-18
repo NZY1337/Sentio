@@ -16,7 +16,6 @@ import { useUsersManagement } from '../../../hooks/useUserManagement';
 import type { UserProps } from '../../../types';
 import type { GridColDef } from '@mui/x-data-grid';
 
-
 export const Users = () => {
     const [updatedRole, setUpdatedRole] = useState<{ [userId: string]: string }>({});
     const [open, setOpen] = useState(false);

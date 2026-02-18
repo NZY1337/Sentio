@@ -32,9 +32,13 @@ import { type Router } from '@toolpad/core';
 import { type Session } from '@toolpad/core/AppProvider';
 import NotFoundPage from '../../NotFound/NotFoundPage';
 
+import { useUsersManagement } from '../../../hooks/useUserManagement';
+
 export default function Dashboard() {
+    const { user: suppabaseUser } = useUsersManagement();
+    const { user: clerkUser } = useUser();
+
     const navigate = useNavigate();
-    const { user } = useUser();
     const { signOut } = useClerk();
 
     useAuth(); // is it necessary to call this here if we're already using useUser and useClerk? maybe not, but it doesn't hurt to ensure the user is authenticated
@@ -46,9 +50,9 @@ export default function Dashboard() {
 
     const dashboardSession = {
         user: {
-            name: user?.fullName,
-            image: user?.imageUrl || 'https://avatars.githubusercontent.com/c',
-            email: user?.emailAddresses[0].emailAddress, id: user?.id
+            name: clerkUser?.fullName,
+            image: clerkUser?.imageUrl || 'https://avatars.githubusercontent.com/c',
+            email: clerkUser?.emailAddresses[0].emailAddress, id: clerkUser?.id
         } as Session['user']
     }
 

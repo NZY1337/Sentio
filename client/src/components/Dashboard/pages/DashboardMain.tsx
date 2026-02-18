@@ -1,13 +1,12 @@
-import React from 'react';
-import {
-    Typography, Card, CardContent, Box, Chip, Stack,
-    useTheme,
-    Container,
-    Button,
-    Grid
-} from "@mui/material";
-
+import React, { useState } from 'react';
+import { Typography, Card, CardContent, Box, Stack, Grid } from "@mui/material";
+import GDPRModal from '../../GDPRModal/index.';
+import HeroCardWithImage, { HeroCardWithImage2 } from '../../HeroCard';
 import { mockUsers } from '../../../mockData';
+import { useUsersManagement } from '../../../hooks/useUserManagement';
+import Editor from '../components/editor/index';
+import QuickStatsSection from '../components/QuickStatsSection';
+import MoodTrendChart from '../components/QuickStatsSection/Charts';
 
 const cardsData = [
     { title: "Pro Membership", price: "€29", desc: "Unlimited AI generations, priority and chat support.", bg: "radial-gradient(circle at bottom right, rgba(0, 255, 200, 0.35), rgba(0,0,0,0) 60%)", },
@@ -19,15 +18,34 @@ const cardsData = [
     },
 ];
 
-import MyEditor from '../components/editor/index';
-
 const DashboardMain: React.FC = () => {
+    const [isGDPROpen, setIsGDPROpen] = useState(false);
+    const { user } = useUsersManagement();
+
+    const handleOpenGDPRModal = () => setIsGDPROpen(true);
+    console.log(user?.consent)
     return (
         <Box>
-            <HeroCardWithImage />
-            <ModernCardGrid />
+            {/* <ModernCardGrid /> */}
+            <GDPRModal open={isGDPROpen} setOpen={setIsGDPROpen} />
 
-            {/* <MyEditor /> */}
+            {!user?.consent ? <HeroCardWithImage onClick={handleOpenGDPRModal} /> : null}
+
+            <Box >
+                <Box flex={1}>
+                    {user?.consent && <HeroCardWithImage2 />}
+                </Box>
+                <Box flex={2} display="flex" gap={2}>
+                    <Box flex={1}>
+                        <QuickStatsSection />
+                    </Box>
+                    <Box flex={1}>
+                        <MoodTrendChart />
+                    </Box>
+                </Box>
+            </Box>
+
+            {/* {user?.consent && <Editor />} */}
 
             {/* {mockUsers.map((user) => (
                 <Card key={user.id} sx={{ mb: 4 }}>
@@ -130,67 +148,6 @@ const ModernCardGrid = () => {
                 ))}
             </Grid>
         </Box >
-    );
-};
-
-const HeroCardWithImage = () => {
-    return (
-        <Box
-            sx={{
-                mb: 4,
-                display: "flex",
-                justifyContent: "center",
-            }}
-        >
-            <Box
-                sx={{
-                    width: "100%",
-                    // maxWidth: 800,
-                    height: 350,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    borderRadius: 4,
-                    position: "relative",
-                    overflow: "hidden",
-                    backgroundImage: `
-            url("https://images.pexels.com/photos/9573973/pexels-photo-9573973.jpeg")
-          `,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                }}
-            >
-                {/* DARK OVERLAY */}
-                <Box
-                    sx={{
-                        position: "absolute",
-                        inset: 0,
-                        backgroundColor: "rgba(0,0,0,0.45)",
-                        backdropFilter: "blur(8px)",
-                    }}
-                />
-
-                {/* CONTENT */}
-                <Box
-                    sx={{
-                        position: "relative",
-                        zIndex: 1,
-                        p: 4,
-                        color: "white",
-                    }}
-                >
-                    <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
-                        Welcome to Sentio
-                    </Typography>
-                    <Typography variant="body1" width="80%" sx={{ color: "rgba(255,255,255,0.8)" }}>
-                        We value your privacy and are committed to protecting your personal data. Our application collects and processes data solely for the purpose of providing you with a personalized journaling experience. We do not share your data with third parties, and we implement robust security measures to safeguard your information. By using our application, you consent to our data collection practices as outlined in our Privacy Policy.
-                    </Typography>
-                    <Button variant="contained" color="primary" sx={{ mt: 3 }}>
-                        citeste gdpr
-                    </Button>
-                </Box>
-            </Box>
-        </Box>
     );
 };
 
