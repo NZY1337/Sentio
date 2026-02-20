@@ -11,7 +11,6 @@ import {
     ToggleButtonGroup,
     CssBaseline,
 } from "@mui/material";
-import { createTheme } from "@mui/material/styles";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { LineChart } from "@mui/x-charts/LineChart";
 
@@ -82,18 +81,14 @@ function MoodTrendChart() {
     const journal = journalStats[0];
 
     return (
-        <Card
-            sx={{
-                background: "#181B20",
-                borderRadius: 4,
-                color: "#fff",
-                boxShadow: "0 8px 30px rgba(0,0,0,0.35)",
-                border: "1px solid #23262F",
-                overflow: "hidden",
-            }}
-        >
+        <Card sx={(theme) => ({
+            // background: theme.palette.background.paper,
+            borderRadius: 4,
+            boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
+            border: `1px solid ${theme.palette.divider}`,
+            overflow: "hidden",
+        })}>
             <CardContent sx={{ p: 3 }}>
-
                 {/* HEADER */}
                 <Box
                     display="flex"
@@ -104,30 +99,25 @@ function MoodTrendChart() {
                     <Box>
                         <Typography
                             variant="caption"
-                            sx={{ color: "#8B949E", fontWeight: 500 }}
+                            sx={(theme) => ({
+                                color: 'theme.palette.text.secondary', fontWeight: 500,
+                            })}
                         >
                             {journal.date}
                         </Typography>
 
                         <Typography
                             variant="h6"
-                            sx={{
-                                fontWeight: 700,
-                                mt: 0.5,
-                                mb: 1,
-                                letterSpacing: 0.2,
-                            }}
+                            sx={(theme) => ({ fontWeight: 700, mt: 0.5, mb: 1, letterSpacing: 0.2, })}
                         >
                             {journal.title}
                         </Typography>
 
                         <Typography
                             variant="body2"
-                            sx={{
-                                color: "#9CA3AF",
-                                lineHeight: 1.6,
-                                maxWidth: "90%",
-                            }}
+                            sx={(theme) => ({
+                                color: theme.palette.text.secondary, lineHeight: 1.6, maxWidth: "90%",
+                            })}
                         >
                             Juom copilasi na plaisti la lac de munca, termenel limită,
                             întâlnită de jurm say gindulion lat tushen setting...
@@ -136,40 +126,23 @@ function MoodTrendChart() {
 
                     {/* SCORE BOX */}
                     <Box
-                        sx={{
-                            background: "#1F242B",
+                        sx={(theme) => ({
+                            background: theme.palette.action.selected,
                             borderRadius: 3,
-                            px: 2,
-                            py: 1.5,
+                            px: 2, py: 1.5,
                             textAlign: "center",
                             minWidth: 90,
-                            border: "1px solid #2A2F38",
-                        }}
-                    >
-                        <Typography
-                            variant="caption"
-                            sx={{ color: "#8B949E", fontWeight: 500 }}
-                        >
+                            border: `1px solid ${theme.palette.divider}`,
+                        })}>
+                        <Typography variant="caption" sx={(theme) => ({
+                            color: theme.palette.text.secondary, fontWeight: 500,
+                        })}>
                             Mood average
                         </Typography>
 
-                        <Box
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                            mt={0.5}
-                        >
-                            <Typography sx={{ fontSize: 18, mr: 0.5 }}>
-                                🟡
-                            </Typography>
-
-                            <Typography
-                                variant="h5"
-                                sx={{
-                                    color: "#FFD600",
-                                    fontWeight: 700,
-                                }}
-                            >
+                        <Box display="flex" alignItems="center" justifyContent="center">
+                            <Typography sx={{ fontSize: 18, mr: 0.5 }}>🟡</Typography>
+                            <Typography variant="h5" sx={{ color: "#FFD600", fontWeight: 700 }}>
                                 6.2
                             </Typography>
                         </Box>
@@ -177,29 +150,21 @@ function MoodTrendChart() {
                 </Box>
 
                 {/* META ROW */}
-                <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    mb={2}
-                >
-                    <Typography
-                        variant="caption"
-                        sx={{ color: "#6B7280", fontWeight: 500 }}
-                    >
+                <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                    <Typography variant="caption" sx={(theme) => ({
+                        color: theme.palette.text.secondary, fontWeight: 500,
+                    })}>
                         GL DRĂC · 03 sects.
                     </Typography>
-
-                    <Typography
-                        variant="caption"
-                        sx={{ color: "#6B7280", fontWeight: 500 }}
-                    >
+                    <Typography variant="caption" sx={(theme) => ({
+                        color: theme.palette.text.secondary, fontWeight: 500,
+                    })}>
                         Trend analysis
                     </Typography>
                 </Box>
 
                 {/* CHART */}
-                <Box sx={{ mt: 1 }}>
+                <Box>
                     <LineChart
                         xAxis={[
                             {
@@ -217,11 +182,6 @@ function MoodTrendChart() {
                             },
                         ]}
                         grid={{ horizontal: true, vertical: false }}
-                        height={180}
-                        sx={{
-                            background: "transparent",
-                            width: "100%",
-                        }}
                     />
                 </Box>
             </CardContent>

@@ -4,6 +4,7 @@ export interface JournalEntry {
     id: string;
     userId: string;
     content: string;
+    status?: string;
     createdAt: string;
     embedding: number[];
     analysis?: EmotionalAnalysis;

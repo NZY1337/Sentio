@@ -18,6 +18,7 @@ export default function JournalEditor({ initialContent, editingId, onSaveOrSubmi
     const createJournalEntry = useCreateJournalEntry();
     const updateJournalEntry = useUpdateJournalEntry();
     let parsedContent = undefined;
+
     if (initialContent) {
         try {
             parsedContent = JSON.parse(initialContent);
@@ -80,7 +81,6 @@ export default function JournalEditor({ initialContent, editingId, onSaveOrSubmi
             </Box>
 
             <Box className="editor-footer" display="flex" gap={2} alignItems="center">
-                {/* Hidden action buttons for external triggering */}
                 <button ref={saveDraftRef} id="save-draft-btn" style={{ display: 'none' }} onClick={handleSaveDraft} />
                 <button ref={submitRef} id="submit-btn" style={{ display: 'none' }} onClick={handleSubmit} />
                 {actionSlot}

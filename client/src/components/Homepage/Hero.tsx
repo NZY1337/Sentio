@@ -7,7 +7,7 @@ import { TypeAnimation } from 'react-type-animation';
 // https://images.unsplash.com/photo-1606744888344-493238951221?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
 
 const Hero = () => {
-    const hero = 'https://images.pexels.com/photos/5407215/pexels-photo-5407215.jpeg';
+    const hero = 'https://images.unsplash.com/photo-1769708984146-11ca9c436685?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
     return (
         <Container maxWidth={false}
             sx={{

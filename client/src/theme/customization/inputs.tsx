@@ -1,7 +1,5 @@
 import { alpha, type Theme, type Components } from '@mui/material/styles';
-import { svgIconClasses } from '@mui/material/SvgIcon';
 import { toggleButtonGroupClasses } from '@mui/material/ToggleButtonGroup';
-import { toggleButtonClasses } from '@mui/material/ToggleButton';
 import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
@@ -10,8 +8,6 @@ import { brand } from '../themePrimitives';
 // colors
 import { grey } from '@mui/material/colors';
 
-// ...theme.applyStyles('dark', {}),
-// ...theme.applyStyles('light', {}),
 
 export const inputsCustomizations: Components<Theme> = {
     MuiButtonBase: {
@@ -21,12 +17,7 @@ export const inputsCustomizations: Components<Theme> = {
         },
         styleOverrides: {
             root: ({ theme }: { theme: Theme }) => ({
-                boxSizing: 'border-box',
-                transition: 'all 100ms ease-in',
-                '&:focus-visible': {
-                    outline: `3px solid ${alpha(theme.palette.primary.main, 0.5)}`,
-                    outlineOffset: '2px',
-                },
+
             }),
         },
     },
@@ -105,10 +96,14 @@ export const inputsCustomizations: Components<Theme> = {
                             border: '1px solid',
                             borderColor: grey[700],
                             backgroundColor: grey[800],
-
                             '&:active': {
                                 backgroundColor: grey[900],
                             },
+                            ...theme.applyStyles('light', {
+                                borderColor: grey[300],
+                                backgroundColor: grey[50],
+                                '&:active': { backgroundColor: grey[200] },
+                            }),
                         },
                     },
                     {
@@ -128,6 +123,15 @@ export const inputsCustomizations: Components<Theme> = {
                             '&:active': {
                                 backgroundColor: alpha(brand[900], 0.5),
                             },
+                            ...theme.applyStyles('light', {
+                                color: brand[700],
+                                borderColor: brand[400],
+                                backgroundColor: alpha(brand[400], 0.1),
+                                '&:hover': {
+                                    backgroundColor: alpha(brand[400], 0.2),
+                                    borderColor: brand[500],
+                                },
+                            }),
                         },
                     },
                     {
@@ -138,6 +142,9 @@ export const inputsCustomizations: Components<Theme> = {
                             '&:active': {
                                 backgroundColor: alpha(grey[700], 0.7),
                             },
+                            ...theme.applyStyles('light', {
+                                '&:active': { backgroundColor: alpha(grey[300], 0.7) },
+                            }),
                         },
                     },
                     {
@@ -150,6 +157,10 @@ export const inputsCustomizations: Components<Theme> = {
                             '&:active': {
                                 backgroundColor: alpha(brand[900], 0.3),
                             },
+                            ...theme.applyStyles('light', {
+                                color: brand[600],
+                                '&:active': { backgroundColor: alpha(brand[400], 0.2) },
+                            }),
                         },
                     },
                 ],
@@ -158,36 +169,6 @@ export const inputsCustomizations: Components<Theme> = {
     },
     MuiIconButton: {
         styleOverrides: {
-            root: ({ theme }: { theme: Theme }) => ({
-                boxShadow: 'none',
-                borderRadius: theme.shape.borderRadius,
-                textTransform: 'none',
-                fontWeight: theme.typography.fontWeightMedium,
-                letterSpacing: 0,
-                color: theme.palette.text.primary,
-                variants: [
-                    {
-                        props: {
-                            size: 'small',
-                        },
-                        style: {
-                            width: '2.25rem',
-                            height: '2.25rem',
-                            padding: '0.25rem',
-                            [`& .${svgIconClasses.root}`]: { fontSize: '1rem' },
-                        },
-                    },
-                    {
-                        props: {
-                            size: 'medium',
-                        },
-                        style: {
-                            width: '2.5rem',
-                            height: '2.5rem',
-                        },
-                    },
-                ],
-            }),
         },
     },
     MuiToggleButtonGroup: {
@@ -203,17 +184,6 @@ export const inputsCustomizations: Components<Theme> = {
     },
     MuiToggleButton: {
         styleOverrides: {
-            root: () => ({
-                padding: '12px 16px',
-                textTransform: 'none',
-                borderRadius: '10px',
-                fontWeight: 500,
-                color: grey[400],
-                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5)',
-                [`&.${toggleButtonClasses.selected}`]: {
-                    color: brand[300],
-                },
-            }),
         },
     },
     MuiCheckbox: {
@@ -226,100 +196,16 @@ export const inputsCustomizations: Components<Theme> = {
             indeterminateIcon: <RemoveRoundedIcon sx={{ height: 14, width: 14 }} />,
         },
         styleOverrides: {
-            root: () => ({
-                margin: 10,
-                height: 16,
-                width: 16,
-                borderRadius: 5,
-                border: '1px solid ',
-                transition: 'border-color, background-color, 120ms ease-in',
-                '&:hover': {
-                    borderColor: brand[300],
-                },
-                '&.Mui-checked': {
-                    color: 'white',
-                    backgroundColor: brand[500],
-                    borderColor: brand[500],
-                    boxShadow: `none`,
-                    '&:hover': {
-                        backgroundColor: brand[600],
-                    },
-                },
-                borderColor: alpha(grey[700], 0.8),
-                boxShadow: '0 0 0 1.5px hsl(210, 0%, 0%) inset',
-                backgroundColor: alpha(grey[900], 0.8),
-                '&.Mui-focusVisible': {
-                    borderColor: brand[400],
-                    outline: `3px solid ${alpha(brand[500], 0.5)}`,
-                    outlineOffset: '2px',
-                },
-            }),
         },
     },
     MuiInputBase: {
         styleOverrides: {
             root: ({ theme }: { theme: Theme }) => ({
-                input: {
-                    '&::placeholder': {
-                        opacity: 0.7,
-                        color: grey[500],
-                    },
-                    "&:-webkit-autofill, input:-webkit-autofill": {
-                        WebkitBoxShadow: "0 0 0 100px #212121 inset !important",
-                        // WebkitTextFillColor: "red !important",
-                        borderRadius: 0,
-
-                    },
-                },
-
-                color: theme.palette.grey[400],
-            }),
-            multiline: () => ({
-                "&.MuiInputBase-multiline": {
-                    height: "auto",
-                }
             }),
         },
     },
     MuiOutlinedInput: {
         styleOverrides: {
-            input: {
-                padding: 0,
-            },
-            root: ({ theme }: { theme: Theme }) => ({
-                padding: '8px 12px',
-                color: theme.palette.text.primary,
-                borderRadius: theme.shape.borderRadius,
-                border: `1px solid ${theme.palette.divider}`,
-                transition: 'border 120ms ease-in',
-                '&:hover': {
-                    borderColor: grey[500],
-                },
-                '& .MuiInputBase-inputMultiline': {
-                    height: '100%!important'
-                },
-                variants: [
-                    {
-                        props: {
-                            size: 'small',
-                        },
-                        style: {
-                            height: '2.25rem',
-                        },
-                    },
-                    {
-                        props: {
-                            size: 'medium',
-                        },
-                        style: {
-                            height: '2.5rem',
-                        },
-                    },
-                ],
-            }),
-            notchedOutline: {
-                border: 'none',
-            },
         },
     },
     MuiInputAdornment: {
@@ -339,16 +225,18 @@ export const inputsCustomizations: Components<Theme> = {
     },
     MuiFormHelperText: {
         styleOverrides: {
-            root: () => ({
+            root: ({ theme }: { theme: Theme }) => ({
                 color: '#fff',
                 marginLeft: 0,
+                ...theme.applyStyles('light', {
+                    color: theme.palette.text.secondary,
+                }),
             }),
         },
     },
     MuiTypography: {
         styleOverrides: {
-            root: ({ theme }: { theme: Theme }) => ({
-                color: theme.palette.grey[100],
+            root: () => ({
                 backgroundColor: 'unset',
             }),
         }

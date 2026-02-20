@@ -3,7 +3,6 @@ import { DashboardProvider } from '../context/dashboardContext';
 
 // hooks
 import { useMemo } from 'react';
-import { useColorScheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { useUser, useClerk, useAuth } from '@clerk/clerk-react';
 
@@ -24,8 +23,7 @@ import CustomThemeSwitcher from './CustomThemeSwitcher';
 
 // utils
 import { DASHBOARD_NAVIGATION } from '../../../helpers/constants';
-import { createTheme } from '@mui/material/styles';
-import { typography, components, colorSchemes, palette } from '../context/themeContext';
+import { appTheme } from '../../../context/AppTheme';
 
 // types
 import { type Router } from '@toolpad/core';
@@ -42,11 +40,6 @@ export default function Dashboard() {
     const { signOut } = useClerk();
 
     useAuth(); // is it necessary to call this here if we're already using useUser and useClerk? maybe not, but it doesn't hurt to ensure the user is authenticated
-
-    const { setMode, mode } = useColorScheme() as {
-        setMode: (mode: 'light' | 'dark') => void;
-        mode: 'light' | 'dark';
-    };
 
     const dashboardSession = {
         user: {
@@ -67,16 +60,9 @@ export default function Dashboard() {
         searchParams: new URLSearchParams(window.location.search),
     }), [navigate]);
 
-    const memoizedTheme = useMemo(() =>
-        createTheme({
-            colorSchemes,
-            typography,
-            components,
-            palette: { ...palette }
-        }), [mode]);
-
     const authentication = useMemo(() => ({
-        signIn: () => { }, signOut
+        signIn: () => { },
+        signOut
     }), [signOut]);
 
     const renderContent = () => {
@@ -98,34 +84,33 @@ export default function Dashboard() {
         }
     };
 
+    // it takes a breakpoint or false
+    const disableWullwidth = () => router.pathname === '/dashboard/journal' ? 'lg' : false;
+
     return (
+
         <AppProvider
             session={dashboardSession}
             authentication={authentication}
             navigation={DASHBOARD_NAVIGATION}
             router={router}
-            theme={memoizedTheme}>
+            theme={appTheme}>
             <DashboardProvider>
                 <NotificationsProvider slotProps={{ snackbar: { anchorOrigin: { vertical: 'bottom', horizontal: 'right' } } }}>
                     <DashboardLayout
                         slots={{
                             sidebarFooter: DashboardFooter,
                             appTitle: DashboardTitle,
-                            toolbarActions: () => {
-                                return <>
-                                    <CustomThemeSwitcher setMode={setMode} mode={mode} />
-                                </>
-                            }
+                            toolbarActions: CustomThemeSwitcher,
                         }}>
-                        <PageContainer
-                            title=''
-                            // breadcrumbs={[]}
-                            className='dashboard-page-container'>
+                        {/* breadcrumbs={[]} */}
+                        <PageContainer maxWidth={disableWullwidth()} title=''>
                             {renderContent()}
                         </PageContainer>
                     </DashboardLayout>
                 </NotificationsProvider>
             </DashboardProvider>
-        </AppProvider>
+        </AppProvider >
+
     );
 }

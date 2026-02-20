@@ -16,51 +16,76 @@ export const brand = {
   900: 'hsl(210, 100%, 21%)',
 };
 
-export const  palette = {
-    primary: {
-        contrastText: brand[50],
-        light: brand[300],
-        main: brand[400],
-        dark: brand[700],
-    },
-    info: {
-        contrastText: brand[300],
-        light: brand[500],
-        main: brand[700],
-        dark: brand[900],
-    },
-    warning: {
-        light: orange[400],
-        main: orange[500],
-        dark: orange[700],
-    },
-    error: {
-        light: red[400],
-        main: red[500],
-        dark: red[700],
-    },
-    success: {
-        light: green[400],
-        main: green[500],
-        dark: green[700],
-    },
-    grey: {
-        ...grey,
-    },
-    divider: alpha(grey[700], 0.6),
-    background: {
-        default: grey[900],
-        paper: 'hsl(220, 30%, 7%)',
-    },
-    text: {
-        primary: 'hsl(0, 0%, 100%)',
-        secondary: grey[400],
-    },
-    action: {
-        hover: alpha(grey[600], 0.2),
-        selected: alpha(grey[600], 0.3),
-    },
-}
+const sharedPalette = {
+  primary: {
+    contrastText: brand[50],
+    light: brand[300],
+    main: brand[400],
+    dark: brand[700],
+  },
+  info: {
+    contrastText: brand[300],
+    light: brand[500],
+    main: brand[700],
+    dark: brand[900],
+  },
+  warning: {
+    light: orange[400],
+    main: orange[500],
+    dark: orange[700],
+  },
+  error: {
+    light: red[400],
+    main: red[500],
+    dark: red[700],
+  },
+  success: {
+    light: green[400],
+    main: green[500],
+    dark: green[700],
+  },
+  grey: {
+    ...grey,
+  },
+};
+
+export const darkPalette = {
+  ...sharedPalette,
+  divider: alpha(grey[700], 0.3),
+  background: {
+    default: grey[900],
+    // paper: 'hsl(220, 30%, 7%)',
+  },
+  text: {
+    primary: 'hsl(0, 0%, 100%)',
+    secondary: grey[400],
+  },
+  action: {
+    hover: alpha(grey[600], 0.2),
+    selected: alpha(grey[600], 0.3),
+  },
+};
+
+export const lightPalette = {
+  ...sharedPalette,
+  divider: alpha(grey[700], 0.3),
+  background: {
+    default: grey[100],
+    // paper: '#FFFFFF',
+  },
+  text: {
+    primary: 'hsl(220, 20%, 10%)',
+    secondary: grey[600],
+  },
+  action: {
+    hover: alpha(grey[400], 0.2),
+    selected: alpha(grey[400], 0.3),
+  },
+};
+
+/** @deprecated Use darkPalette or lightPalette via colorSchemes instead */
+export const palette = darkPalette;
+
 
 export const typography = {
   h1: {
@@ -114,7 +139,7 @@ export const typography = {
     fontSize: defaultTheme.typography.pxToRem(14),
     fontFamily: 'Poppins, serif',
     fontWeight: 400,
-    
+
   },
   caption: {
     fontSize: defaultTheme.typography.pxToRem(12),

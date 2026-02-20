@@ -1,16 +1,16 @@
 import { useState, useCallback, type ChangeEvent, type MouseEvent } from 'react';
+import { useColorScheme } from '@mui/material/styles';
 
 // components
 import { Tooltip, Box, Popover, FormControl, FormLabel, RadioGroup, Radio, FormControlLabel, IconButton } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 
-// ! must be a type for these from mui
-interface CustomThemeSwitcherProps {
-    setMode: (mode: 'light' | 'dark') => void;
-    mode: 'light' | 'dark';
-}
+const CustomThemeSwitcher = () => {
+    const { setMode, mode } = useColorScheme() as {
+        setMode: (mode: 'light' | 'dark') => void;
+        mode: 'light' | 'dark';
+    };
 
-const CustomThemeSwitcher = ({ setMode, mode }: CustomThemeSwitcherProps) => {
     const handleThemeChange = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
             setMode(event.target.value as 'light' | 'dark');

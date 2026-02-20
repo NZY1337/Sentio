@@ -115,11 +115,34 @@ export const Users = () => {
         <Box>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <DataGrid
-                    sx={{
-                        '& .MuiDataGrid-cell': {
-                            display: 'flex', alignItems: 'center',
+                    sx={(theme) => ({
+                        borderRadius: 2,
+                        border: '1px solid',
+                        borderColor: theme.palette.divider,
+                        // backgroundColor: theme.palette.background.paper,
+                        '& .MuiDataGrid-columnHeaders': {
+                            backgroundColor: theme.palette.action.hover,
+                            borderBottom: `1px solid ${theme.palette.divider}`,
                         },
-                    }}
+                        '& .MuiDataGrid-columnHeaderTitle': {
+                            fontWeight: 600,
+                        },
+                        '& .MuiDataGrid-cell': {
+                            display: 'flex',
+                            alignItems: 'center',
+                            borderBottom: `1px solid ${theme.palette.divider}`,
+                        },
+                        '& .MuiDataGrid-row:hover': {
+                            backgroundColor: theme.palette.action.hover,
+                        },
+                        '& .MuiDataGrid-footerContainer': {
+                            borderTop: `1px solid ${theme.palette.divider}`,
+                            color: theme.palette.text.secondary,
+                        },
+                        '& .MuiDataGrid-overlay': {
+                            backgroundColor: theme.palette.background.paper,
+                        },
+                    })}
                     columns={columns} rows={users || []} />
             </div>
 

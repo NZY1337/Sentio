@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+
+
+// hooks
+import { useState } from 'react';
+import { useUsersManagement } from '../../../hooks/useUserManagement';
+import { useDashboardContext } from '../context/dashboardContext';
+
+// components
 import { Typography, Card, CardContent, Box, Stack, Grid } from "@mui/material";
 import ConsentModal from '../../ConsentModal/index.';
 import HeroCardWithImage, { HeroCardWithImage2 } from '../../HeroCard';
-import { mockUsers } from '../../../mockData';
-import { useUsersManagement } from '../../../hooks/useUserManagement';
-import Editor from '../components/Editor/index';
-import QuickStatsSection from '../components/QuickStatsSection';
 import MoodTrendChart from '../components/QuickStatsSection/Charts';
+import QuickStatsSection from '../components/QuickStatsSection';
 
 const cardsData = [
     { title: "Pro Membership", price: "€29", desc: "Unlimited AI generations, priority and chat support.", bg: "radial-gradient(circle at bottom right, rgba(0, 255, 200, 0.35), rgba(0,0,0,0) 60%)", },
@@ -20,34 +24,120 @@ const cardsData = [
 
 const DashboardMain: React.FC = () => {
     const [isConsentModalOpen, setIsConsentModalOpen] = useState(false);
+    const {
+        journalEntries,
+        handleEditJournal,
+        handleDeleteJournal
+    } = useDashboardContext();
     const { user } = useUsersManagement();
 
     const handleConsentModal = () => setIsConsentModalOpen(true);
-    console.log(user?.consent)
+
     return (
-        <Box>
-            <ModernCardGrid />
-            <ConsentModal open={isConsentModalOpen} setOpen={setIsConsentModalOpen} />
+        <>
+            {!user?.consent && (
+                <Grid container spacing={2} alignItems="stretch">
+                    <Grid size={7} sx={{ display: "flex" }}>
+                        <ConsentModal open={isConsentModalOpen} setOpen={setIsConsentModalOpen} />
+                        <HeroCardWithImage onClick={handleConsentModal} />
+                    </Grid>
 
-            {!user?.consent ? <HeroCardWithImage onClick={handleConsentModal} /> : null}
-
-            <Box >
-                <Box flex={1}>
-                    {user?.consent && <HeroCardWithImage2 />}
-                </Box>
-                <Box flex={2} display="flex" gap={2}>
-                    <Box flex={1}>
-                        <QuickStatsSection />
-                    </Box>
-                    <Box flex={1}>
+                    <Grid size={5} sx={{ display: "flex" }}>
                         <MoodTrendChart />
-                    </Box>
-                </Box>
-            </Box>
+                    </Grid>
+                </Grid>
+            )}
 
-            {/* {user?.consent && <Editor />} */}
+            {user?.consent && (
+                <Grid container spacing={2}>
+                    <Grid size={{ xl: 7 }}>
+                        <HeroCardWithImage2 />
+                    </Grid>
 
-            {/* {mockUsers.map((user) => (
+                    <Grid size={{ xl: 5 }}>
+                        <MoodTrendChart />
+                    </Grid>
+
+                    <QuickStatsSection editMode={true} onDelete={handleDeleteJournal} onEdit={handleEditJournal} journalEntries={journalEntries} />
+                </Grid>
+            )}
+        </>
+    );
+};
+
+export const ModernCardGrid = () => {
+    return (
+        <Grid container mt={5} spacing={2} sx={{ width: '100%' }}>
+            {cardsData.map((card, index) => (
+                <Grid size={{ xs: 12, md: 4 }} sx={{ width: '100%' }} key={index} >
+                    <Card
+                        sx={(theme) => ({
+                            width: "100%",
+                            margin: "0 auto",
+                            padding: 0,
+                            borderRadius: 4,
+                            overflow: "hidden",
+                            backdropFilter: "blur(20px)",
+                            // background: theme.palette.background.paper,
+                            border: `1px solid ${theme.palette.divider}`,
+                            transition: "all 0.4s ease",
+                            "&:hover": { transform: "translateY(-8px)", cursor: 'pointer' },
+                        })}>
+                        <Box sx={(theme) => ({
+                            p: 2,
+                            borderBottom: `1px solid ${theme.palette.divider}`,
+                        })}>
+                            <Typography variant="overline" sx={(theme) => ({
+                                letterSpacing: 2,
+                                color: theme.palette.text.secondary,
+                            })}>
+                                PLAN
+                            </Typography>
+                            <Typography variant="h5" sx={(theme) => ({
+                                fontWeight: 600,
+                                mt: 1,
+                            })}>
+                                {card.title}
+                            </Typography>
+                        </Box>
+
+                        <CardContent sx={{ position: "relative", p: 2, background: card.bg }}>
+                            <Stack spacing={2}>
+                                <Typography variant="body2" sx={(theme) => ({
+                                    color: theme.palette.text.secondary,
+                                })}>
+                                    {card.desc}
+                                </Typography>
+
+                                <Typography variant="h3" sx={(theme) => ({
+                                    fontWeight: 800,
+                                })}>
+                                    {card.price}
+                                    <Typography
+                                        component="span"
+                                        variant="body1"
+                                        sx={(theme) => ({
+                                            fontWeight: 400,
+                                            color: theme.palette.text.secondary,
+                                        })}
+                                    >
+                                        /month
+                                    </Typography>
+                                </Typography>
+                            </Stack>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            ))}
+        </Grid>
+    );
+};
+
+export default DashboardMain;
+
+
+// import { mockUsers } from '../../../mockData';
+{/* {mockUsers.map((user) => (
                 <Card key={user.id} sx={{ mb: 4 }}>
                     <CardContent>
                         <Typography variant="h5">{user.username}</Typography>
@@ -76,78 +166,3 @@ const DashboardMain: React.FC = () => {
                     </CardContent>
                 </Card>
             ))} */}
-        </Box>
-    );
-};
-
-const ModernCardGrid = () => {
-    return (
-        <Box sx={{ my: 5 }}>
-            <Grid container spacing={4}>
-                {cardsData.map((card, index) => (
-                    <Grid size={{ xs: 12, md: 4 }} key={index}>
-                        <Card
-                            sx={{
-                                borderRadius: 4,
-                                overflow: "hidden",
-                                backdropFilter: "blur(20px)",
-                                background: "rgba(255,255,255,0.08)",
-                                border: "1px solid rgba(255,255,255,0.2)",
-                                transition: "all 0.4s ease",
-                                "&:hover": {
-                                    transform: "translateY(-8px)",
-                                    cursor: 'pointer'
-                                },
-                            }} >
-                            <Box
-                                sx={{
-                                    p: 3,
-                                    // background: card.bg,
-                                    borderBottom: "1px solid rgba(255,255,255,0.15)",
-                                }}
-                            >
-                                <Typography
-                                    variant="overline"
-                                    sx={{ letterSpacing: 2, color: "rgba(255,255,255,0.7)" }}
-                                >
-                                    PLAN
-                                </Typography>
-                                <Typography variant="h5" sx={{ fontWeight: 600, color: "white", mt: 1 }}>
-                                    {card.title}
-                                </Typography>
-                            </Box>
-
-                            <CardContent
-                                sx={{
-                                    position: "relative",
-                                    p: 4,
-                                    background: card.bg,
-                                    // background: `radial-gradient(circle at bottom right, rgba(0, 255, 200, 0.35), rgba(0,0,0,0) 60%)`,
-                                }}
-                            >
-                                <Stack spacing={2}>
-                                    <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.7)" }}>
-                                        {card.desc}
-                                    </Typography>
-
-                                    <Typography variant="h3" sx={{ fontWeight: 800, color: "white" }}>
-                                        {card.price}
-                                        <Typography
-                                            component="span"
-                                            variant="body1"
-                                            sx={{ fontWeight: 400, color: "rgba(255,255,255,0.6)" }}
-                                        >
-                                            /month
-                                        </Typography>
-                                    </Typography>
-                                </Stack>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                ))}
-            </Grid>
-        </Box >
-    );
-};
-
-export default DashboardMain;

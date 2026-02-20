@@ -1,16 +1,20 @@
 import React from 'react';
-import  AppBar from '@mui/material/AppBar';
-import  Toolbar from '@mui/material/Toolbar';
-import  Box from '@mui/material/Box';
-import  Container from '@mui/material/Container';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import MenuDrawer from './drawer';
 import RenderLinks from './RenderLinks';
 import { styled } from '@mui/material/styles';
 import Logo from '../Logo/Logo';
 
 const AppBarContainer = styled(AppBar)(({ theme }) => ({
+    boxShadow: 'none',
+    backgroundColor: 'transparent',
+    backgroundImage: 'none',
+
     '.MuiToolbar-root': {
-        display: 'flex', 
+        display: 'flex',
         justifyContent: 'space-between',
         [theme.breakpoints.up('md')]: {
             padding: 0
@@ -18,12 +22,12 @@ const AppBarContainer = styled(AppBar)(({ theme }) => ({
     },
 
     [theme.breakpoints.down('md')]: {
-      '.MuiContainer-root': {
-        display: 'flex', 
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexDirection: 'row-reverse',
-    },
+        '.MuiContainer-root': {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexDirection: 'row-reverse',
+        },
     },
 }));
 
@@ -33,8 +37,8 @@ const Navigation: React.FC = () => {
             <Container>
                 <MenuDrawer />
                 <Toolbar sx={{ height: '80px', mt: 2, borderRadius: 2 }}>
-                    <Logo /> 
-                    <Box sx={{ display: { xs: "none", md: "flex" }}}>
+                    <Logo />
+                    <Box sx={{ display: { xs: "none", md: "flex" } }}>
                         <RenderLinks />
                     </Box>
                 </Toolbar>

@@ -3,235 +3,179 @@ import {
     Typography,
     Card,
     CardContent,
-    Chip,
     Stack,
-    Avatar,
-    useTheme,
+    IconButton,
+    Divider,
+    Grid
 } from "@mui/material";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import type { JournalEntry } from "../../../../types/journal";
 
-interface JournalStat {
-    id: string;
-    title: string;
-    date: string;
-    moodScore: number;
-    dominantEmotion: string;
-}
-
-const mockData: JournalStat[] = [
-    {
-        id: "1",
-        title: "Good day together",
-        date: "17 Apr",
-        moodScore: 5.2,
-        dominantEmotion: "Fericire",
-    },
-    {
-        id: "2",
-        title: "Overwhelmed at work",
-        date: "16 Apr",
-        moodScore: 5.5,
-        dominantEmotion: "Anxietate",
-    },
-    {
-        id: "3",
-        title: "Conflict cu șeful",
-        date: "12 Apr",
-        moodScore: 4.0,
-        dominantEmotion: "Stres",
-    },
-    {
-        id: "4",
-        title: "Unproductive day",
-        date: "08 Apr",
-        moodScore: 6.8,
-        dominantEmotion: "Tristețe",
-    },
-    {
-        id: "5",
-        title: "Relaxing weekend",
-        date: "07 Apr",
-        moodScore: 7.9,
-        dominantEmotion: "Liniște",
-    },
-];
-
-const emotionColor = (emotion: string) => {
-    switch (emotion) {
-        case "Fericire":
-            return "success";
-        case "Anxietate":
-            return "warning";
-        case "Stres":
-            return "error";
-        case "Tristețe":
-            return "info";
-        case "Liniște":
-            return "primary";
-        default:
-            return "default";
+const extractTitle = (content: string): string => {
+    try {
+        const parsed = JSON.parse(content);
+        const firstParagraph = parsed?.content?.[0];
+        if (firstParagraph?.content?.[0]?.text) {
+            const text = firstParagraph.content[0].text;
+            return text.length > 50 ? text.substring(0, 50) + "..." : text;
+        }
+        return "Journal Entry";
+    } catch {
+        return content.length > 50 ? content.substring(0, 50) + "..." : content || "Journal Entry";
     }
 };
 
-export default function QuickStatsSection() {
-    const theme = useTheme();
+const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.toLocaleString('en-US', { month: 'short' });
+    return `${day} ${month}`;
+};
 
+interface QuickStatsSectionProps {
+    journalEntries: JournalEntry[];
+    editMode?: boolean;
+    onEdit?: (entry: JournalEntry) => void;
+    onDelete?: (entryId: string) => void;
+}
+
+export default function QuickStatsSection({ journalEntries, onEdit, onDelete, editMode = false }: QuickStatsSectionProps) {
     return (
-        <Box>
-            {/* <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-                mb={2}
-            >
-                <Typography variant="h6" fontWeight={600}>
-                    Statistici rapide
-                </Typography>
+        <>
+            {journalEntries && journalEntries.map((entry) => {
+                const title = extractTitle(entry.content);
+                const formattedDate = formatDate(entry.createdAt);
+                const dominantEmotion = entry.analysis?.dominantEmotion || "N/A";
+                const riskScore = entry.analysis?.riskScore || 0;
+                const status = entry.status || "draft";
 
-                <Chip
-                    label="7 zile"
-                    size="small"
-                    sx={{
-                        background: theme.palette.grey[800],
-                    }}
-                />
-            </Stack> */}
-
-            {/* List */}
-            <Stack spacing={1} sx={{ border: "1px solid #23262F", borderRadius: 4, p: 2 }}>
-                {mockData.map((entry) => (
-                    <Card
-
-                        key={entry.id}
-                        sx={{
-                            background: "#181B20",
-                            borderRadius: 4,
-                            border: "1px solid #23262F",
-                            transition: "all 0.25s cubic-bezier(.4,0,.2,1)",
-                            backdropFilter: "blur(6px)",
-                            "&:hover": {
-                                transform: "translateY(-4px)",
-                                borderColor: "#2F3642",
-                            },
-                        }}
-                    >
-                        <CardContent sx={{ px: 3, py: 2 }}>
-                            <Stack direction="row" alignItems="center" spacing={3}>
-                                <Box
-                                    sx={{
-                                        width: 60,
-                                        height: 60,
-                                        borderRadius: 3,
-                                        background: "#1F242B",
-                                        border: "1px solid #2A2F38",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        flexDirection: "column",
-                                    }}
-                                >
-                                    <Typography
-                                        variant="caption"
-                                        sx={{ color: "#6B7280", fontSize: 11 }}
-                                    >
-                                        {entry.date.split(" ")[0]}
-                                    </Typography>
-                                    <Typography
-                                        variant="body2"
-                                        sx={{ fontWeight: 600 }}
-                                    >
-                                        {entry.date.split(" ")[1]}
-                                    </Typography>
-                                </Box>
-
-                                {/* MAIN CONTENT */}
-                                <Box flex={1}>
-                                    <Typography
-                                        variant="subtitle1"
-                                        sx={{
-                                            fontWeight: 600,
-                                            mb: 0.5,
-                                            letterSpacing: 0.2,
-                                        }}
-                                    >
-                                        {entry.title}
-                                    </Typography>
-
-                                    <Box display="flex" alignItems="center" gap={1.5}>
-                                        <Box
-                                            sx={{
-                                                px: 1.5,
-                                                py: 0.4,
-                                                borderRadius: 2,
-                                                fontSize: 12,
-                                                fontWeight: 500,
-                                                background: "rgba(255,255,255,0.05)",
-                                                color: "#A1A1AA",
-                                            }}
-                                        >
-                                            {entry.dominantEmotion}
+                return (
+                    <Grid key={entry.id} size={{ md: 3 }} spacing={1}>
+                        <Card
+                            sx={(theme) => ({
+                                borderRadius: 3,
+                                // background: theme.palette.background.pape r,
+                                border: `.1px solid ${theme.palette.divider}`,
+                                transition: "all 0.25s cubic-bezier(.4,0,.2,1)",
+                                "&:hover": {
+                                    transform: "translateY(-4px)",
+                                },
+                            })}>
+                            <CardContent sx={{ px: { xs: 2, sm: 3 }, py: 2 }}>
+                                <Stack
+                                    direction="row"
+                                    alignItems="center"
+                                    justifyContent="space-between"
+                                    flexWrap="wrap"
+                                    gap={1.5}>
+                                    <Stack direction="row" alignItems="center" spacing={1} flexWrap="wrap">
+                                        {/* Date pill */}
+                                        <Box sx={(theme) => ({
+                                            px: 1, py: 0.5, borderRadius: 2,
+                                            background: theme.palette.action.selected,
+                                            border: `1px solid ${theme.palette.divider}`,
+                                            display: "flex", alignItems: "center",
+                                        })}>
+                                            <Typography variant="caption" sx={(theme) => ({
+                                                color: theme.palette.text.secondary, fontSize: 11,
+                                            })}>
+                                                {formattedDate.split(" ")[0]}
+                                            </Typography>
+                                            <Typography variant="caption" sx={(theme) => ({ fontWeight: 500, ml: 0.5, color: theme.palette.text.primary })}>
+                                                {formattedDate.split(" ")[1]}
+                                            </Typography>
                                         </Box>
 
-                                        <Typography
-                                            variant="caption"
-                                            sx={{ color: "#6B7280" }}
-                                        >
-                                            AI analyzed
-                                        </Typography>
+                                        {/* Risk pill */}
+                                        <Box sx={(theme) => ({
+                                            px: 1, py: 0.5, borderRadius: 2,
+                                            background: theme.palette.action.selected,
+                                            border: `1px solid ${theme.palette.divider}`,
+                                            display: "flex", alignItems: "center",
+                                        })}>
+                                            <Typography variant="caption" sx={(theme) => ({
+                                                color: theme.palette.text.secondary, fontSize: 11,
+                                            })}>
+                                                Risk
+                                            </Typography>
+                                            <Typography sx={{
+                                                fontWeight: 700, ml: 0.75,
+                                                color: riskScore >= 7 ? "#EF4444" : riskScore >= 5 ? "#F59E0B" : "#22C55E",
+                                            }}>
+                                                {riskScore.toFixed(1)}
+                                            </Typography>
+                                        </Box>
+
+                                        {/* Emotion pill */}
+                                        <Box sx={(theme) => ({
+                                            px: 1, py: 0.5, borderRadius: 2,
+                                            fontSize: 12, fontWeight: 500,
+                                            background: theme.palette.action.hover,
+                                            color: theme.palette.text.secondary,
+                                        })}>
+                                            {dominantEmotion}
+                                        </Box>
+                                    </Stack>
+
+                                    {/* Status */}
+                                    <Box sx={{
+                                        px: 1, py: 0.5, borderRadius: 2,
+                                        fontSize: 11, fontWeight: 600,
+                                        textTransform: "uppercase", letterSpacing: 0.6,
+                                        background: status === "draft" ? "rgba(251,191,36,0.15)" : "rgba(34,197,94,0.15)",
+                                        color: status === "draft" ? "#F59E0B" : "#22C55E",
+                                    }}>
+                                        {status}
                                     </Box>
-                                </Box>
+                                </Stack>
 
-                                {/* SCORE BLOCK */}
-                                <Box
-                                    sx={{
-                                        minWidth: 90,
-                                        textAlign: "center",
-                                        px: 2,
-                                        py: 1.5,
-                                        borderRadius: 3,
-                                        background: "#1F242B",
-                                        border: "1px solid #2A2F38",
-                                    }}
-                                >
-                                    <Typography
-                                        variant="caption"
-                                        sx={{ color: "#6B7280", fontSize: 11 }}
-                                    >
-                                        Mood
-                                    </Typography>
+                                {/* Title */}
+                                <Typography variant="subtitle1" sx={(theme) => ({ fontWeight: 600, mt: 2, mb: 1, lineHeight: 1.3, })}>
+                                    {title}
+                                </Typography>
 
-                                    <Typography
-                                        variant="h5"
-                                        sx={{
-                                            fontWeight: 700,
-                                            mt: 0.5,
-                                            color:
-                                                entry.moodScore >= 7
-                                                    ? "#22C55E"
-                                                    : entry.moodScore >= 5
-                                                        ? "#F59E0B"
-                                                        : "#EF4444",
-                                        }}
-                                    >
-                                        {entry.moodScore}
-                                    </Typography>
-                                </Box>
+                                <Divider sx={(theme) => ({
+                                    borderColor: theme.palette.divider, my: 1.5,
+                                })} />
 
-                                {/* ARROW */}
-                                <ArrowForwardIosIcon
-                                    sx={{
-                                        fontSize: 14,
-                                        color: "#4B5563",
-                                        transition: "0.2s",
-                                        "&:hover": { color: "#9CA3AF" },
-                                    }}
-                                />
-                            </Stack>
-                        </CardContent>
-                    </Card>
-                ))}
-            </Stack>
+                                {/* Analysis */}
+                                <Typography variant="caption" sx={(theme) => ({
+                                    color: theme.palette.text.secondary,
+                                })}>
+                                    {entry.analysis ? "AI analyzed" : "Pending analysis"} – processed by AI
+                                </Typography>
 
-        </Box>
+                                {/* Actions */}
+                                {!editMode && (
+                                    <Stack direction="row" spacing={1} justifyContent="flex-end" mt={2}>
+                                        <IconButton
+                                            size="small"
+                                            onClick={() => onEdit?.(entry)}
+                                            sx={{
+                                                background: "rgba(59,130,246,0.12)",
+                                                borderRadius: 2, transition: "all 0.2s",
+                                                "&:hover": { background: "rgba(59,130,246,0.25)", transform: "scale(1.05)" },
+                                            }}>
+                                            <EditIcon sx={{ fontSize: 18 }} />
+                                        </IconButton>
+                                        <IconButton
+                                            size="small"
+                                            onClick={() => onDelete?.(entry.id)}
+                                            sx={{
+                                                background: "rgba(239,68,68,0.12)",
+                                                borderRadius: 2, transition: "all 0.2s",
+                                                "&:hover": { transform: "scale(1.05)" },
+                                            }}>
+                                            <DeleteIcon sx={{ fontSize: 18 }} />
+                                        </IconButton>
+                                    </Stack>
+                                )}
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                );
+            })}
+        </>
     );
 }

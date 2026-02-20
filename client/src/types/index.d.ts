@@ -1,4 +1,4 @@
-export * from './project';
+export * from './journal';
 export * from './carousel';
 export * from './users';
 export * from './builder';

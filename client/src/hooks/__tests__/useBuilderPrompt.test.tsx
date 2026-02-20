@@ -2,10 +2,10 @@ import React from 'react'
 import { render, fireEvent } from '@testing-library/react'
 import { vi } from 'vitest'
 import useBuilderPrompt from '../useBuilderPrompt'
-import type { EditableProjectProps } from '../../../src/types/project'
+import type { EditableProjectProps } from '../../types/journal'
 
 const Dummy = ({ builderState, setBuilderState }: { builderState: EditableProjectProps; setBuilderState: React.Dispatch<React.SetStateAction<EditableProjectProps>> }) => {
-  const { handleClickCategory, handleGenerateBaseDesign, handlePromptChange } = useBuilderPrompt({ builderState, setBuilderState, setCharCount: () => {} })
+  const { handleClickCategory, handleGenerateBaseDesign, handlePromptChange } = useBuilderPrompt({ builderState, setBuilderState, setCharCount: () => { } })
   return (
     <div>
       <button onClick={() => handleClickCategory('TEST')}>cat</button>

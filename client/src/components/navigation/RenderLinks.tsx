@@ -11,13 +11,21 @@ const RenderLinks = () => {
     return (
         <MenuList sx={{ display: "flex" }}>
             <MenuItem disableRipple >
-                <Link component={ReactRouterLink} to="/">
+                <Link
+                    component={ReactRouterLink}
+                    to="/"
+                    sx={{ color: 'white !important', textDecoration: 'none', '&:hover': { color: 'rgba(255,255,255,0.8)' } }}
+                >
                     Home
                 </Link>
             </MenuItem>
             {isSignedIn ? (
                 <MenuItem disableRipple>
-                    <Link component={ReactRouterLink} to="/dashboard">
+                    <Link
+                        component={ReactRouterLink}
+                        to="/dashboard"
+                        sx={{ color: 'white', textDecoration: 'none', '&:hover': { color: 'rgba(255,255,255,0.8) !important' } }}
+                    >
                         Dashboard
                     </Link>
                 </MenuItem>
