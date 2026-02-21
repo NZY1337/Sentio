@@ -5,7 +5,7 @@ export const navigationCustomization: Components<Theme> = {
     styleOverrides: {
       root: ({ ownerState }) => ({
         boxShadow: 'none',
-        backgroundColor: 'transparent',
+        backgroundColor: 'transparent !important',
         backgroundImage: 'none',
         // Only apply absolute positioning to dashboard AppBar (from Toolpad)
         ...(ownerState.position === 'fixed' && {

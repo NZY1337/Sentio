@@ -85,7 +85,7 @@ export default function Dashboard() {
     };
 
     // it takes a breakpoint or false
-    const disableWullwidth = () => router.pathname === '/dashboard/journal' ? 'lg' : false;
+    const disableWullwidth = () => router.pathname !== '/dashboard' ? 'lg' : false;
 
     return (
 

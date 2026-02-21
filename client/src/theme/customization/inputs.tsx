@@ -11,12 +11,8 @@ import { grey } from '@mui/material/colors';
 
 export const inputsCustomizations: Components<Theme> = {
     MuiButtonBase: {
-        defaultProps: {
-            disableTouchRipple: true,
-            disableRipple: true,
-        },
         styleOverrides: {
-            root: ({ theme }: { theme: Theme }) => ({
+            root: () => ({
 
             }),
         },
@@ -200,7 +196,7 @@ export const inputsCustomizations: Components<Theme> = {
     },
     MuiInputBase: {
         styleOverrides: {
-            root: ({ theme }: { theme: Theme }) => ({
+            root: () => ({
             }),
         },
     },

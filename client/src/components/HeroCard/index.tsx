@@ -56,7 +56,6 @@ export const HeroCardWithImage2 = () => {
     return (
         <Box
             sx={{
-                mb: 2,
                 display: "flex",
                 justifyContent: "center",
             }}>

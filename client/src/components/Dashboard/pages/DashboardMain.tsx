@@ -13,12 +13,23 @@ import MoodTrendChart from '../components/QuickStatsSection/Charts';
 import QuickStatsSection from '../components/QuickStatsSection';
 
 const cardsData = [
-    { title: "Pro Membership", price: "€29", desc: "Unlimited AI generations, priority and chat support.", bg: "radial-gradient(circle at bottom right, rgba(0, 255, 200, 0.35), rgba(0,0,0,0) 60%)", },
     {
-        title: "Business Plan", price: "€59", desc: "Team collaboration, analytics, wakeup calls & more.", bg: "radial-gradient(circle at bottom right, rgba(138, 43, 226, 0.35), rgba(255,192,203,0) 60%)",
+        title: "Pro Membership",
+        price: "€29",
+        desc: "Unlimited AI generations, priority and chat support.",
+        bg: "radial-gradient(circle at bottom right, rgba(0, 255, 200, 0.35), rgba(0,0,0,0) 60%)",
     },
     {
-        title: "Enterprise", price: "€99", desc: "Full customization and dedicated support.", bg: "radial-gradient(circle at bottom right, rgba(255,165,0,0.35), rgba(255,255,0,0) 60%)",
+        title: "Business Plan",
+        price: "€59",
+        desc: "Team collaboration, analytics, wakeup calls & more.",
+        bg: "radial-gradient(circle at bottom right, rgba(138, 43, 226, 0.35), rgba(255,192,203,0) 60%)",
+    },
+    {
+        title: "Enterprise",
+        price: "€99",
+        desc: "Full customization and dedicated support.",
+        bg: "radial-gradient(circle at bottom right, rgba(255,165,0,0.35), rgba(255,255,0,0) 60%)",
     },
 ];
 
@@ -54,7 +65,7 @@ const DashboardMain: React.FC = () => {
                         <HeroCardWithImage2 />
                     </Grid>
 
-                    <Grid size={{ xl: 5 }}>
+                    <Grid size={{ xl: 5, lg: 12 }}>
                         <MoodTrendChart />
                     </Grid>
 
@@ -134,35 +145,3 @@ export const ModernCardGrid = () => {
 };
 
 export default DashboardMain;
-
-
-// import { mockUsers } from '../../../mockData';
-{/* {mockUsers.map((user) => (
-                <Card key={user.id} sx={{ mb: 4 }}>
-                    <CardContent>
-                        <Typography variant="h5">{user.username}</Typography>
-                        <Typography variant="subtitle2">{user.email}</Typography>
-
-                        <Box sx={{ mt: 2 }}>
-                            <Typography variant="subtitle1">Jurnale:</Typography>
-                            {user.journals.map((j) => (
-                                <Card key={j.id} sx={{ mb: 2, p: 2 }}>
-                                    <Typography>{j.content}</Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        Emoție dominantă: {j.analysis.dominantEmotion} | Tipare: {j.analysis.cognitiveDistortion} | Scor risc: {j.analysis.riskScore}
-                                    </Typography>
-                                </Card>
-                            ))}
-                        </Box>
-
-                        {user.alerts.length > 0 && (
-                            <Box sx={{ mt: 2 }}>
-                                <Typography variant="subtitle1">Alerte:</Typography>
-                                {user.alerts.map((a) => (
-                                    <Chip key={a.id} label={a.message} color={a.level === "critical" ? "error" : "warning"} sx={{ mr: 1 }} />
-                                ))}
-                            </Box>
-                        )}
-                    </CardContent>
-                </Card>
-            ))} */}

@@ -51,7 +51,7 @@ export default function QuickStatsSection({ journalEntries, onEdit, onDelete, ed
                 const status = entry.status || "draft";
 
                 return (
-                    <Grid key={entry.id} size={{ md: 3 }} spacing={1}>
+                    <Grid key={entry.id} size={{ xs: 12, md: 6, lg: 4, xl: 3 }} spacing={1} sx={{ width: '100%' }}>
                         <Card
                             sx={(theme) => ({
                                 borderRadius: 3,
@@ -131,7 +131,7 @@ export default function QuickStatsSection({ journalEntries, onEdit, onDelete, ed
                                 </Stack>
 
                                 {/* Title */}
-                                <Typography variant="subtitle1" sx={(theme) => ({ fontWeight: 600, mt: 2, mb: 1, lineHeight: 1.3, })}>
+                                <Typography variant="subtitle1" sx={{ fontWeight: 300, mt: 2, mb: 1, lineHeight: 1.3, fontSize: 15 }}>
                                     {title}
                                 </Typography>
 
@@ -173,7 +173,7 @@ export default function QuickStatsSection({ journalEntries, onEdit, onDelete, ed
                                 )}
                             </CardContent>
                         </Card>
-                    </Grid>
+                    </Grid >
                 );
             })}
         </>

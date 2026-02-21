@@ -87,38 +87,33 @@ function MoodTrendChart() {
             boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
             border: `1px solid ${theme.palette.divider}`,
             overflow: "hidden",
+            height: "100%",
         })}>
-            <CardContent sx={{ p: 3 }}>
+            <CardContent sx={{ p: 4, }}>
                 {/* HEADER */}
                 <Box
                     display="flex"
                     justifyContent="space-between"
                     alignItems="flex-start"
                     mb={2}
-                >
+                    sx={{ width: '100%' }}>
                     <Box>
                         <Typography
                             variant="caption"
                             sx={(theme) => ({
                                 color: 'theme.palette.text.secondary', fontWeight: 500,
-                            })}
-                        >
+                            })}>
                             {journal.date}
                         </Typography>
 
-                        <Typography
-                            variant="h6"
-                            sx={(theme) => ({ fontWeight: 700, mt: 0.5, mb: 1, letterSpacing: 0.2, })}
-                        >
+                        <Typography variant="h6" sx={(theme) => ({ fontWeight: 700, mt: 0.5, mb: 1, letterSpacing: 0.2, })}>
                             {journal.title}
                         </Typography>
 
-                        <Typography
-                            variant="body2"
+                        <Typography variant="body2"
                             sx={(theme) => ({
                                 color: theme.palette.text.secondary, lineHeight: 1.6, maxWidth: "90%",
-                            })}
-                        >
+                            })}>
                             Juom copilasi na plaisti la lac de munca, termenel limită,
                             întâlnită de jurm say gindulion lat tushen setting...
                         </Typography>
@@ -166,6 +161,7 @@ function MoodTrendChart() {
                 {/* CHART */}
                 <Box>
                     <LineChart
+                        sx={{ height: '210px' }}
                         xAxis={[
                             {
                                 scaleType: "point",
