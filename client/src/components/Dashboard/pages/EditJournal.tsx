@@ -1,14 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Button, Typography, CircularProgress, Alert } from '@mui/material';
 import JournalEditor from '../components/Editor/index';
 import { useDashboardContext } from '../context/dashboardContext';
 
 const EditJournal: React.FC = () => {
-    // Extract ID from URL pathname manually since we're using Toolpad routing
-    const pathParts = window.location.pathname.split('/');
-    const id = pathParts[pathParts.length - 1];
-
+    const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { journalEntries, isJournalsLoading } = useDashboardContext();
 
