@@ -15,11 +15,13 @@ import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { PageContainer } from '@toolpad/core/PageContainer';
 import { Users } from '../pages/Users';
 import { AppProvider } from '@toolpad/core/AppProvider';
-import DashboardMain from '../pages/DashboardMain';
+import DashboardMain from '../pages/Dashboard';
+import ToolbarActions from './ToolbarActions';
+import AllJournals from './AllJournals';
+import EditJournal from '../pages/EditJournal';
 
 // Providers
 import { NotificationsProvider } from '@toolpad/core/useNotifications';
-import CustomThemeSwitcher from './CustomThemeSwitcher';
 
 // utils
 import { DASHBOARD_NAVIGATION } from '../../../helpers/constants';
@@ -66,22 +68,20 @@ export default function Dashboard() {
     }), [signOut]);
 
     const renderContent = () => {
-        switch (router.pathname) {
-            case '/dashboard':
-                return <DashboardMain />;
+        const pathname = router.pathname;
 
-            case '/dashboard/journal':
-                return <Journal />;
+        const routes: Record<string, React.ReactNode> = {
+            '/dashboard': <DashboardMain />,
+            '/dashboard/journals': <AllJournals />,
+            '/dashboard/journal': <Journal />,
+            '/dashboard/profile': <Profile />,
+            '/dashboard/users': <Users />,
+        };
 
-            case '/dashboard/profile':
-                return <Profile />;
+        if (routes[pathname]) return routes[pathname];
+        if (/^\/dashboard\/journals\/[^\/]+$/.test(pathname)) return <EditJournal />;
 
-            case '/dashboard/users':
-                return <Users />;
-
-            default:
-                return <NotFoundPage />;
-        }
+        return <NotFoundPage />;
     };
 
     // it takes a breakpoint or false
@@ -101,7 +101,7 @@ export default function Dashboard() {
                         slots={{
                             sidebarFooter: DashboardFooter,
                             appTitle: DashboardTitle,
-                            toolbarActions: CustomThemeSwitcher,
+                            toolbarActions: ToolbarActions,
                         }}>
                         {/* breadcrumbs={[]} */}
                         <PageContainer maxWidth={disableWullwidth()} title=''>

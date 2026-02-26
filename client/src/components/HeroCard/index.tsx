@@ -1,7 +1,7 @@
 import {
     Typography, Box, Button,
 } from "@mui/material";
-import { ModernCardGrid } from "../Dashboard/pages/DashboardMain";
+import { ModernCardGrid } from "../Dashboard/pages/Dashboard";
 import happyDoctor from "../../assets/happy-doctor.png";
 
 interface HeroCardWithImageProps {
@@ -61,7 +61,7 @@ export const HeroCardWithImage2 = () => {
             }}>
             <Box
                 sx={(theme) => ({
-                    p: 4,
+                    p: 2,
                     width: "100%",
                     display: "flex",
                     alignItems: "center",
@@ -75,7 +75,7 @@ export const HeroCardWithImage2 = () => {
                     backgroundSize: "cover",
                     backgroundPosition: "center center",
                 })}>
-                <Box
+                {/* <Box
                     sx={{
                         position: "absolute",
                         right: 35,
@@ -96,10 +96,10 @@ export const HeroCardWithImage2 = () => {
                         alt="Happy Doctor"
                         style={{ objectFit: "cover", objectPosition: "center" }}
                     />
-                </Box>
+                </Box> */}
 
                 <Box sx={{ position: "relative", zIndex: 1 }}>
-                    <Typography variant="body2" sx={(theme) => ({
+                    <Typography sx={(theme) => ({
                         fontWeight: 400,
                         mb: 1,
                         fontSize: 30,

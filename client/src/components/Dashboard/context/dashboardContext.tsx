@@ -1,5 +1,6 @@
 // src/components/Dashboard/DashboardContext.tsx
 import { createContext, useState, useContext, type ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useJournalEntries, useDeleteJournalEntry } from '../hooks/useJournal';
 import type { JournalEntry } from '../../../types';
 
@@ -24,6 +25,7 @@ export const DashboardContext = createContext<DashboardContextType | undefined>(
 export const DashboardProvider = ({ children }: { children: ReactNode }) => {
     const { data: journals, isLoading: isJournalsLoading, error: journalsError } = useJournalEntries();
     const deleteJournalEntryMutation = useDeleteJournalEntry();
+    const navigate = useNavigate();
 
     const [editingContent, setEditingContent] = useState<string | null>(null);
     const [editingId, setEditingId] = useState<string | null>(null);
@@ -32,10 +34,7 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
     const journalEntries = journals?.journalEntries || [];
 
     const handleEditJournal = (journal: JournalEntry) => {
-        setEditingContent(journal.content);
-        setEditingId(journal.id);
-        setEditorKey(prev => prev + 1);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        navigate(`/dashboard/journals/${journal.id}`);
     };
 
     const handleNewJournal = () => {

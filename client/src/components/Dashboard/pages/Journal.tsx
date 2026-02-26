@@ -7,7 +7,6 @@ import { TextStyleKit } from '@tiptap/extension-text-style';
 
 import { Box, Button, Typography, CircularProgress, Card, CardContent, Grid } from '@mui/material';
 import JournalEditor from '../components/Editor/index';
-import QuickStatsSection from '../components/QuickStatsSection';
 import { useDashboardContext } from '../context/dashboardContext';
 
 const ReadOnlyJournalEntry: FC<{ content: string }> = ({ content }) => {
@@ -82,7 +81,7 @@ const JournalPage: React.FC = () => {
                                         Trimite pt analiza
                                     </Button>
                                     <Button variant="outlined" color="secondary" onClick={handleNewJournal}>
-                                        Creează jurnal nou
+                                        Clear
                                     </Button>
                                 </>
                             )}

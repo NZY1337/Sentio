@@ -54,7 +54,6 @@ export const darkPalette = {
   divider: alpha(grey[700], 0.3),
   background: {
     default: grey[900],
-    // paper: 'hsl(220, 30%, 7%)',
   },
   text: {
     primary: 'hsl(0, 0%, 100%)',
@@ -64,6 +63,33 @@ export const darkPalette = {
     hover: alpha(grey[600], 0.2),
     selected: alpha(grey[600], 0.3),
   },
+  journal: {
+    risk: {
+      high: red[400],
+      medium: orange[400],
+      low: green[400],
+    },
+    status: {
+      draft: {
+        background: alpha(orange[400], 0.15),
+        text: orange[400],
+      },
+      published: {
+        background: alpha(green[400], 0.15),
+        text: green[400],
+      },
+    },
+    action: {
+      edit: {
+        background: alpha(brand[400], 0.12),
+        hover: alpha(brand[400], 0.25),
+      },
+      delete: {
+        background: alpha(red[400], 0.12),
+        hover: alpha(red[400], 0.25),
+      },
+    },
+  },
 };
 
 export const lightPalette = {
@@ -71,7 +97,6 @@ export const lightPalette = {
   divider: alpha(grey[700], 0.3),
   background: {
     default: grey[100],
-    // paper: '#FFFFFF',
   },
   text: {
     primary: 'hsl(220, 20%, 10%)',
@@ -81,11 +106,34 @@ export const lightPalette = {
     hover: alpha(grey[400], 0.2),
     selected: alpha(grey[400], 0.3),
   },
+  journal: {
+    risk: {
+      high: red[700],
+      medium: orange[700],
+      low: green[700],
+    },
+    status: {
+      draft: {
+        background: alpha(orange[500], 0.15),
+        text: orange[700],
+      },
+      published: {
+        background: alpha(green[500], 0.15),
+        text: green[700],
+      },
+    },
+    action: {
+      edit: {
+        background: alpha(brand[400], 0.12),
+        hover: alpha(brand[400], 0.25),
+      },
+      delete: {
+        background: alpha(red[500], 0.12),
+        hover: alpha(red[500], 0.25),
+      },
+    },
+  },
 };
-
-/** @deprecated Use darkPalette or lightPalette via colorSchemes instead */
-export const palette = darkPalette;
-
 
 export const typography = {
   h1: {

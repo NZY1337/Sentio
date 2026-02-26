@@ -8,8 +8,7 @@ import imageUrl from '../../assets/dashboard.png';
 
 const Hero = () => {
     const hero = 'https://images.pexels.com/photos/458530/pexels-photo-458530.jpeg';
-
-    const words = ["REACT", "MUIRE", "FIGMA", "VUEJS"];
+    const words = ["ANGER", "ANXIETY", "STRESS", "FEAR",];
     const radius = 120;
     const center = 150;
 
@@ -64,7 +63,8 @@ const Hero = () => {
                             </Box>
                         </Grid>
 
-                        <Grid size={{ xl: 6 }} >
+                        <Grid size={{ xl: 6 }} sx={{ bg: 'red', position: 'relative', }}>
+                            <Button sx={{ position: 'absolute', transform: 'translate(-50%, -50%)', top: '50%', left: '50%' }} color={'success'}>STOP</Button>
                             <svg width="300" height="300" viewBox="0 0 300 300">
                                 <defs>
                                     <path
@@ -82,7 +82,7 @@ const Hero = () => {
                                     // distribuim fiecare cuvânt pe cerc la un offset egal
                                     const offsetPercent = (index / words.length) * 100;
                                     return (
-                                        <text key={index} fontSize="12.5" fontFamily="sans-serif" fill="#c5d6c9" style={{ letterSpacing: "10px", animation: "spin 12s linear infinite" }}>
+                                        <text key={index} fontSize="12.5" fontFamily="sans-serif" fill="#eef0ee" style={{ letterSpacing: "10px", animation: "spin 12s linear infinite" }}>
                                             <textPath href="#circlePath" startOffset={`${offsetPercent}%`} method="align" spacing="auto">
                                                 {word}
                                             </textPath>

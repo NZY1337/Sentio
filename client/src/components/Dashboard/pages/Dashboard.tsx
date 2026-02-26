@@ -9,8 +9,8 @@ import { useDashboardContext } from '../context/dashboardContext';
 import { Typography, Card, CardContent, Box, Stack, Grid } from "@mui/material";
 import ConsentModal from '../../ConsentModal/index.';
 import HeroCardWithImage, { HeroCardWithImage2 } from '../../HeroCard';
-import MoodTrendChart from '../components/QuickStatsSection/Charts';
-import QuickStatsSection from '../components/QuickStatsSection';
+import MoodTrendChart from '../components/Stats/Charts';
+import Stats from '../components/Stats';
 
 const cardsData = [
     {
@@ -60,17 +60,43 @@ const DashboardMain: React.FC = () => {
             )}
 
             {user?.consent && (
-                <Grid container spacing={2}>
-                    <Grid size={{ xl: 7 }}>
-                        <HeroCardWithImage2 />
+                <>
+                    <Grid container spacing={2}>
+                        <Grid size={{ xl: 7 }}>
+                            <HeroCardWithImage2 />
+                        </Grid>
+
+                        <Grid size={{ xl: 5, lg: 12 }}>
+                            <MoodTrendChart />
+                        </Grid>
                     </Grid>
 
-                    <Grid size={{ xl: 5, lg: 12 }}>
-                        <MoodTrendChart />
-                    </Grid>
+                    <Grid container spacing={2}>
+                        <Grid p={2} sx={{ border: "1px solid", borderColor: "divider", borderRadius: 3, mt: 2 }} size={{ xl: 5 }}>
+                            {/* <img src="https://images.pexels.com/photos/35854906/pexels-photo-35854906.jpeg" alt="AI Illustration" style={{ width: "100%", borderRadius: 8, }} />
+                             */}
+                            <video
+                                src="https://www.pexels.com/download/video/36244254/"
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                style={{
+                                    width: "100%",
+                                    height: '100%',
+                                    borderRadius: 8,
+                                    objectFit: "cover"
+                                }}
+                            />
+                        </Grid>
 
-                    <QuickStatsSection editMode={true} onDelete={handleDeleteJournal} onEdit={handleEditJournal} journalEntries={journalEntries} />
-                </Grid>
+                        <Grid p={2} sx={{ border: "1px solid", borderColor: "divider", borderRadius: 3, mt: 2 }} size={{ xl: 7 }}>
+                            <Grid container spacing={2}>
+                                <Stats journalEntries={journalEntries} onEdit={handleEditJournal} onDelete={handleDeleteJournal} editMode={false} />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </>
             )}
         </>
     );

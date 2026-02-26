@@ -37,7 +37,7 @@ const mood30Days = [
 const journalStats = [
     {
         id: "1",
-        title: "Good day together",
+        title: "Ultimele 6 luni",
         date: "17 Apr",
         moodScore: 5.2,
         emotion: "Fericire",
@@ -82,14 +82,13 @@ function MoodTrendChart() {
 
     return (
         <Card sx={(theme) => ({
-            // background: theme.palette.background.paper,
             borderRadius: 4,
             boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
             border: `1px solid ${theme.palette.divider}`,
             overflow: "hidden",
             height: "100%",
         })}>
-            <CardContent sx={{ p: 4, }}>
+            <CardContent sx={{ p: 2 }}>
                 {/* HEADER */}
                 <Box
                     display="flex"
@@ -101,12 +100,12 @@ function MoodTrendChart() {
                         <Typography
                             variant="caption"
                             sx={(theme) => ({
-                                color: 'theme.palette.text.secondary', fontWeight: 500,
+                                color: theme.palette.text.secondary, fontWeight: 500,
                             })}>
                             {journal.date}
                         </Typography>
 
-                        <Typography variant="h6" sx={(theme) => ({ fontWeight: 700, mt: 0.5, mb: 1, letterSpacing: 0.2, })}>
+                        <Typography fontSize={20} sx={(theme) => ({ fontWeight: 200, mt: 0.5, mb: 1, letterSpacing: 0.2, })}>
                             {journal.title}
                         </Typography>
 
@@ -114,8 +113,7 @@ function MoodTrendChart() {
                             sx={(theme) => ({
                                 color: theme.palette.text.secondary, lineHeight: 1.6, maxWidth: "90%",
                             })}>
-                            Juom copilasi na plaisti la lac de munca, termenel limită,
-                            întâlnită de jurm say gindulion lat tushen setting...
+                            Scrie-ti gandurile zilnic pentru a primi insight-uri personalizate și a-ți monitoriza starea emoțională în timp.
                         </Typography>
                     </Box>
 
@@ -129,9 +127,7 @@ function MoodTrendChart() {
                             minWidth: 90,
                             border: `1px solid ${theme.palette.divider}`,
                         })}>
-                        <Typography variant="caption" sx={(theme) => ({
-                            color: theme.palette.text.secondary, fontWeight: 500,
-                        })}>
+                        <Typography variant="caption" sx={{ fontWeight: 500 }}>
                             Mood average
                         </Typography>
 
