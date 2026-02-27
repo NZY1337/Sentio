@@ -23,7 +23,7 @@ type DashboardContextType = {
 export const DashboardContext = createContext<DashboardContextType | undefined>(undefined);
 
 export const DashboardProvider = ({ children }: { children: ReactNode }) => {
-    const { data: journals, isLoading: isJournalsLoading, error: journalsError } = useJournalEntries();
+    const { data: journals, isLoading: isJournalsLoading, error: journalsError } = useJournalEntries({ limit: 6 });
     const deleteJournalEntryMutation = useDeleteJournalEntry();
     const navigate = useNavigate();
 

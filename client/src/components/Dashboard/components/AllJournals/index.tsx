@@ -1,22 +1,41 @@
 import React, { useState } from 'react';
 import { Box, Typography, CircularProgress, Grid, Pagination, Stack } from '@mui/material';
-import { useDashboardContext } from '../../context/dashboardContext';
+import { useNavigate } from 'react-router-dom';
+import { useJournalEntries, useDeleteJournalEntry } from '../../hooks/useJournal';
 import Stats from '../Stats';
+import type { JournalEntry } from '../../../../types/journal';
 
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 2; // Temporarily set to 2 for testing
 
 const AllJournals: React.FC = () => {
-    const {
-        journalEntries,
-        isJournalsLoading,
-        journalsError,
-        handleEditJournal,
-        handleDeleteJournal
-    } = useDashboardContext();
-
+    const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
 
-    if (isJournalsLoading) {
+    const { data, isLoading, error } = useJournalEntries({
+        page: currentPage,
+        limit: ITEMS_PER_PAGE,
+    });
+
+    const deleteJournalEntryMutation = useDeleteJournalEntry();
+
+    const handleEditJournal = (journal: JournalEntry) => {
+        navigate(`/dashboard/journals/${journal.id}`);
+    };
+
+    const handleDeleteJournal = async (journalEntryId: string) => {
+        try {
+            await deleteJournalEntryMutation.mutateAsync(journalEntryId);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handlePageChange = (_event: React.ChangeEvent<unknown>, page: number) => {
+        setCurrentPage(page);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    if (isLoading) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
                 <CircularProgress />
@@ -24,25 +43,22 @@ const AllJournals: React.FC = () => {
         );
     }
 
-    if (journalsError) {
+    if (error) {
         return (
             <Box p={3}>
                 <Typography color="error">
-                    Error loading journal entries: {journalsError.message}
+                    Error loading journal entries: {error.message}
                 </Typography>
             </Box>
         );
     }
 
-    const totalPages = Math.ceil(journalEntries.length / ITEMS_PER_PAGE);
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const endIndex = startIndex + ITEMS_PER_PAGE;
-    const paginatedEntries = journalEntries.slice(startIndex, endIndex);
+    const journalEntries = data?.journalEntries || [];
+    const pagination = data?.pagination;
 
-    const handlePageChange = (_event: React.ChangeEvent<unknown>, page: number) => {
-        setCurrentPage(page);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
+    console.log('API Response:', data);
+    console.log('Pagination:', pagination);
+    console.log('Total Pages:', pagination?.totalPages);
 
     return (
         <Box>
@@ -51,7 +67,7 @@ const AllJournals: React.FC = () => {
                     All Journals
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    {journalEntries.length} {journalEntries.length === 1 ? 'entry' : 'entries'}
+                    {pagination?.total || 0} {pagination?.total === 1 ? 'entry' : 'entries'}
                 </Typography>
             </Stack>
 
@@ -68,17 +84,17 @@ const AllJournals: React.FC = () => {
                 <>
                     <Grid container spacing={2}>
                         <Stats
-                            journalEntries={paginatedEntries}
+                            journalEntries={journalEntries}
                             onEdit={handleEditJournal}
                             onDelete={handleDeleteJournal}
                             editMode={true}
                         />
                     </Grid>
 
-                    {totalPages > 1 && (
+                    {pagination && pagination.totalPages > 1 && (
                         <Box display="flex" justifyContent="center" mt={4}>
                             <Pagination
-                                count={totalPages}
+                                count={pagination.totalPages}
                                 page={currentPage}
                                 onChange={handlePageChange}
                                 color="primary"

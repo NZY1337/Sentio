@@ -7,7 +7,9 @@ import imageUrl from '../../assets/dashboard.png';
 // https://images.unsplash.com/photo-1606744888344-493238951221?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
 
 const Hero = () => {
-    const hero = 'https://images.pexels.com/photos/458530/pexels-photo-458530.jpeg';
+    // const hero = 'https://images.pexels.com/photos/458530/pexels-photo-458530.jpeg';
+    // const hero = 'https://images.pexels.com/photos/35016/soap-bubble-colorful-ball-soapy-water.jpg';
+    const hero = 'https://images.pexels.com/photos/7451933/pexels-photo-7451933.jpeg';
     const words = ["ANGER", "ANXIETY", "STRESS", "FEAR",];
     const radius = 120;
     const center = 150;
@@ -34,7 +36,7 @@ const Hero = () => {
                 <Container sx={{ height: '100%' }}>
                     <Navigation />
                     <Grid container sx={{ alignItems: 'center', height: '100%', justifyContent: '' }} spacing={4}>
-                        <Grid size={{ xl: 6 }} sx={{ display: 'flex', flexDirection: 'column', textAlign: 'left', }}>
+                        <Grid size={{ xl: 7 }} sx={{ display: 'flex', flexDirection: 'column', textAlign: 'left', }}>
                             <Typography variant="body2" sx={{ borderRadius: '8px', fontWeight: '400', fontSize: '18px' }}>
                                 <TypeAnimation sequence={['Create de oameni', 1500, 'Pentru Oameni', 1500,]}
                                     wrapper="span"
@@ -45,8 +47,8 @@ const Hero = () => {
                                 />
                             </Typography>
 
-                            <Typography variant="h1" sx={{ mb: 3, borderRadius: '8px', fontWeight: 'bold' }}>
-                                Bun Venit la Sentio
+                            <Typography variant="body2" fontSize={40} sx={{ mb: 3, borderRadius: '8px', }}>
+                                Jurnal pentru sănătatea ta emoțională.
                             </Typography>
 
                             <Typography variant="subtitle1" sx={(theme) => ({
@@ -59,12 +61,12 @@ const Hero = () => {
 
                             <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-start', gap: 2 }}>
                                 <Button variant='contained'>Incepe Acum</Button>
-                                <Button sx={{ color: 'orange' }} variant='outlined'>Solicită o demonstrație <ArrowRight /></Button>
+                                <Button variant='outlined'>Solicită o demonstrație <ArrowRight /></Button>
                             </Box>
                         </Grid>
 
-                        <Grid size={{ xl: 6 }} sx={{ bg: 'red', position: 'relative', }}>
-                            <Button sx={{ position: 'absolute', transform: 'translate(-50%, -50%)', top: '50%', left: '50%' }} color={'success'}>STOP</Button>
+                        <Grid size={{ xl: 5 }} sx={{ bg: 'red', position: 'relative', }}>
+                            <Button sx={{ position: 'absolute', transform: 'translate(-50%, -50%)', top: '50%', left: '50%' }} color={'#fff'}>STOP</Button>
                             <svg width="300" height="300" viewBox="0 0 300 300">
                                 <defs>
                                     <path
@@ -102,9 +104,9 @@ const Hero = () => {
                     </Grid>
                 </Container>
             </Container >
-            <Container sx={{ padding: 0, textAlign: 'center' }}>
+            {/* <Container sx={{ padding: 0, textAlign: 'center' }}>
                 <img src={imageUrl} width="100%" height="100%" style={{ objectFit: 'cover', borderRadius: 5 }} alt="Dashboard preview" />
-            </Container>
+            </Container> */}
         </>
     );
 };

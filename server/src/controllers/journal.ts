@@ -8,12 +8,36 @@ const JournalEntryValidator = z.object({
 });
 
 export const getJournalEntries = async (req: Request, res: Response) => {
-    const entries = await prismaClient.journalEntry.findMany({
-        where: { userId: req.auth.userId },
-        include: { analysis: true },
-        orderBy: { createdAt: "desc" },
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 12;
+    const skip = (page - 1) * limit;
+
+    const [entries, total] = await Promise.all([
+        prismaClient.journalEntry.findMany({
+            where: { userId: req.auth.userId },
+            include: { analysis: true },
+            orderBy: { createdAt: "desc" },
+            skip,
+            take: limit,
+        }),
+        prismaClient.journalEntry.count({
+            where: { userId: req.auth.userId },
+        }),
+    ]);
+
+    const totalPages = Math.ceil(total / limit);
+
+    res.status(200).json({
+        journalEntries: entries,
+        pagination: {
+            page,
+            limit,
+            total,
+            totalPages,
+            hasNext: page < totalPages,
+            hasPrev: page > 1,
+        },
     });
-    res.status(200).json({ journalEntries: entries });
 };
 
 export const getJournalEntryById = async (req: Request, res: Response) => {

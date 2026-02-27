@@ -1,16 +1,16 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { journalService } from '../../../services/journal';
-import type { CreateJournalEntryDto, UpdateJournalEntryDto } from '../../../services/journal/index';
+import type { CreateJournalEntryDto, UpdateJournalEntryDto, PaginationParams } from '../../../services/journal/index';
 import { useAuth } from '@clerk/clerk-react';
 
-export const useJournalEntries = () => {
+export const useJournalEntries = (paginationParams?: PaginationParams) => {
     const { getToken } = useAuth();
     return useQuery({
-        queryKey: ['journalEntries'],
+        queryKey: ['journalEntries', paginationParams],
         queryFn: async () => {
             const token = await getToken();
             if (!token) throw new Error('No authentication token');
-            return journalService.getJournalEntries(token);
+            return journalService.getJournalEntries(token, paginationParams);
         },
     });
 };

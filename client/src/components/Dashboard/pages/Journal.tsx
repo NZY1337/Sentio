@@ -26,15 +26,12 @@ const ReadOnlyJournalEntry: FC<{ content: string }> = ({ content }) => {
 
 const JournalPage: React.FC = () => {
     const {
-        journalEntries,
         isJournalsLoading,
         journalsError,
         editingContent,
         editingId,
         editorKey,
-        handleEditJournal,
         handleNewJournal,
-        handleDeleteJournal
     } = useDashboardContext();
 
     if (isJournalsLoading) {

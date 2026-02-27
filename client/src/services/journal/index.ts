@@ -10,8 +10,19 @@ export type UpdateJournalEntryDto = {
     status?: string;
 };
 
-const getJournalEntries = async (token: string) => {
-    const response = await fetch(`${BACKEND_URL}/journal`, {
+export type PaginationParams = {
+    page?: number;
+    limit?: number;
+};
+
+const getJournalEntries = async (token: string, params?: PaginationParams) => {
+    const queryParams = new URLSearchParams();
+    if (params?.page) queryParams.append('page', params.page.toString());
+    if (params?.limit) queryParams.append('limit', params.limit.toString());
+
+    const url = `${BACKEND_URL}/journal${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+
+    const response = await fetch(url, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

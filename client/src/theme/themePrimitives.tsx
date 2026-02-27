@@ -182,11 +182,13 @@ export const typography = {
   body1: {
     fontSize: defaultTheme.typography.pxToRem(14),
     fontFamily: 'Poppins, serif',
+    lineHeight: 1.2,
   },
   body2: {
     fontSize: defaultTheme.typography.pxToRem(14),
     fontFamily: 'Poppins, serif',
     fontWeight: 400,
+    lineHeight: 1.2,
 
   },
   caption: {

@@ -4,11 +4,7 @@
     --purple-contrast: #7c3aed;
     --white: #ffffff;
     --border: #e5e7eb;
-    --border-light: #2a2d33;
-}
-
-[data-mui-color-scheme="light"] {
-    --border-light: #e5e7eb;
+    --border-light: var(--mui-palette-divider)
 }
 
 /* Editor Container */
@@ -19,13 +15,20 @@
     border-top-right-radius: 0.5rem;
 }
 
+.menu-bar hr {
+    border: .1px solid var(--border-light);
+}
+
 /* Menu Bar */
 .menu-bar {
     border-bottom: .5px solid var(--border-light);
-    padding: 0.5rem;
     display: flex;
     flex-wrap: wrap;
     gap: 0.25rem;
+}
+
+.menu-action-group:not(:last-child) {
+    border-bottom: 1px solid var(--border-light);
 }
 
 .editor-footer {
@@ -35,28 +38,17 @@
     border-bottom-right-radius: 0.5rem;
 }
 
-/* Button Styles */
-/* .menu-bar button {
-    background-color: transparent;
-    border: none;
-    border-radius: 0.375rem;
-    color: #d1d5db;
-    cursor: pointer;
-    padding: 0.5rem 0.75rem;
-    transition: background-color 0.15s;
-} */
-
-[data-mui-color-scheme="light"] .menu-bar button {
+/* [data-mui-color-scheme="light"] .menu-bar button {
     color: #374151;
 }
 
 [data-mui-color-scheme="light"] .menu-bar button:hover {
     background-color: #f3f4f6;
-}
+} */
 
 .menu-bar button.is-active {
     background-color: var(--purple);
-    color: var(--purple);
+    color: white
 }
 
 .menu-bar button.is-active:hover {
@@ -67,7 +59,7 @@
 .menu-bar button:disabled {
     opacity: 0.4;
     cursor: not-allowed;
-    color: black;
+    color: rgb(182, 178, 178);
 }
 
 /* Editor Content */
