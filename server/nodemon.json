@@ -1,7 +1,8 @@
 {
     "watch": [
-        "./**/*"
+        "./**/*",
+        ".env"
     ],
-    "ext": ".js,.ts",
+    "ext": ".js,.ts,.env",
     "exec": "npx tsx ./index.ts"
 }

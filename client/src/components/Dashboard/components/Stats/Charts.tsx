@@ -4,81 +4,86 @@ import {
     Typography,
     Card,
     CardContent,
-    Chip,
-    Stack,
-    Avatar,
-    ToggleButton,
-    ToggleButtonGroup,
-    CssBaseline,
 } from "@mui/material";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { LineChart } from "@mui/x-charts/LineChart";
+import type { JournalEntry } from "../../../../types/journal";
 
-/* ---------------------- MOCK DATA ---------------------- */
+type MoodTrendChartProps = {
+    journalEntries?: JournalEntry[];
+};
 
-const mood7Days = [
-    { date: "2 Apr", score: 5.1 },
-    { date: "4 Apr", score: 6.2 },
-    { date: "6 Apr", score: 4.8 },
-    { date: "8 Apr", score: 6.8 },
-    { date: "10 Apr", score: 7.2 },
-    { date: "12 Apr", score: 4.0 },
-    { date: "14 Apr", score: 5.9 },
-];
+const FIVE_MINUTES_MS = 5 * 60 * 1000;
+const LAST_HOUR_BUCKETS = 12;
 
-const mood30Days = [
-    ...mood7Days,
-    { date: "16 Apr", score: 6.4 },
-    { date: "18 Apr", score: 5.3 },
-    { date: "20 Apr", score: 6.9 },
-    { date: "22 Apr", score: 7.4 },
-];
+const buildLastHour = (journalEntries: JournalEntry[]) => {
+    const now = new Date();
+    const start = new Date(now.getTime() - 60 * 60 * 1000);
 
-const journalStats = [
-    {
-        id: "1",
-        title: "Ultimele 6 luni",
-        date: "17 Apr",
-        moodScore: 5.2,
-        emotion: "Fericire",
-    },
-    {
-        id: "2",
-        title: "Overwhelmed at work",
-        date: "16 Apr",
-        moodScore: 5.5,
-        emotion: "Anxietate",
-    },
-    {
-        id: "3",
-        title: "Conflict cu șeful",
-        date: "12 Apr",
-        moodScore: 4.0,
-        emotion: "Stres",
-    },
-    {
-        id: "4",
-        title: "Unproductive day",
-        date: "08 Apr",
-        moodScore: 6.8,
-        emotion: "Tristețe",
-    },
-    {
-        id: "5",
-        title: "Relaxing weekend",
-        date: "07 Apr",
-        moodScore: 7.9,
-        emotion: "Liniște",
-    },
-];
+    const buckets = Array.from({ length: LAST_HOUR_BUCKETS }, (_, index) => {
+        const date = new Date(start.getTime() + index * FIVE_MINUTES_MS);
+        return {
+            label: date.toLocaleTimeString("ro-RO", { hour: "2-digit", minute: "2-digit" }),
+            values: [] as number[],
+        };
+    });
 
-/* ---------------------- CHART ---------------------- */
+    journalEntries.forEach((entry) => {
+        if (typeof entry.analysis?.riskScore !== "number") return;
 
-function MoodTrendChart() {
-    const [range, setRange] = React.useState("7");
-    const data = range === "7" ? mood7Days : mood30Days;
-    // Folosim primul jurnal ca exemplu pentru header
-    const journal = journalStats[0];
+        const createdAt = new Date(entry.createdAt);
+        if (Number.isNaN(createdAt.getTime())) return;
+        if (createdAt < start || createdAt > now) return;
+
+        const bucketIndex = Math.min(
+            LAST_HOUR_BUCKETS - 1,
+            Math.max(0, Math.floor((createdAt.getTime() - start.getTime()) / FIVE_MINUTES_MS)),
+        );
+
+        buckets[bucketIndex]?.values.push(entry.analysis.riskScore);
+    });
+
+    const rawPoints = buckets.map((bucket) => {
+        const average = bucket.values.length
+            ? bucket.values.reduce((sum, value) => sum + value, 0) / bucket.values.length
+            : null;
+
+        return {
+            label: bucket.label,
+            score: average !== null ? Number(average.toFixed(1)) : null,
+            count: bucket.values.length,
+        };
+    });
+
+    const knownScores = rawPoints.filter((point) => point.score !== null).map((point) => point.score as number);
+    const fallbackScore = knownScores.length
+        ? Number((knownScores.reduce((sum, value) => sum + value, 0) / knownScores.length).toFixed(1))
+        : 0;
+
+    let lastKnown = fallbackScore;
+
+    return rawPoints.map((point) => {
+        if (point.score === null) {
+            return {
+                ...point,
+                score: lastKnown,
+            };
+        }
+
+        lastKnown = point.score;
+        return {
+            ...point,
+        };
+    });
+};
+
+function MoodTrendChart({ journalEntries = [] }: MoodTrendChartProps) {
+    const data = React.useMemo(() => buildLastHour(journalEntries), [journalEntries]);
+    const averageMood = React.useMemo(() => {
+        const validPoints = data.filter((point) => point.count > 0).map((point) => point.score);
+        if (!validPoints.length) return 0;
+        const average = validPoints.reduce((sum, value) => sum + value, 0) / validPoints.length;
+        return Number(average.toFixed(1));
+    }, [data]);
 
     return (
         <Card sx={(theme) => ({
@@ -87,6 +92,7 @@ function MoodTrendChart() {
             border: `1px solid ${theme.palette.divider}`,
             overflow: "hidden",
             height: "100%",
+            width: "100%",
         })}>
             <CardContent sx={{ p: 2 }}>
                 {/* HEADER */}
@@ -102,11 +108,11 @@ function MoodTrendChart() {
                             sx={(theme) => ({
                                 color: theme.palette.text.secondary, fontWeight: 500,
                             })}>
-                            {journal.date}
+                            {new Date().toLocaleTimeString("ro-RO", { hour: "2-digit", minute: "2-digit" })}
                         </Typography>
 
                         <Typography fontSize={20} sx={(theme) => ({ fontWeight: 200, mt: 0.5, mb: 1, letterSpacing: 0.2, })}>
-                            {journal.title}
+                            Ultima oră
                         </Typography>
 
                         <Typography variant="body2"
@@ -134,7 +140,7 @@ function MoodTrendChart() {
                         <Box display="flex" alignItems="center" justifyContent="center">
                             <Typography sx={{ fontSize: 18, mr: 0.5 }}>🟡</Typography>
                             <Typography variant="h5" sx={{ color: "#FFD600", fontWeight: 700 }}>
-                                6.2
+                                {averageMood.toFixed(1)}
                             </Typography>
                         </Box>
                     </Box>
@@ -161,7 +167,7 @@ function MoodTrendChart() {
                         xAxis={[
                             {
                                 scaleType: "point",
-                                data: data.map((d) => d.date),
+                                data: data.map((d) => d.label),
                                 tickLabelStyle: { fill: "#8B949E", fontSize: 12 },
                             },
                         ]}

@@ -19,16 +19,13 @@ import { NotificationsProvider } from '@toolpad/core/useNotifications';
 
 // utils
 import { DASHBOARD_NAVIGATION } from '../../../helpers/constants';
-import { appTheme } from '../../../context/AppTheme';
+import { dashboardTheme } from '../../../context/AppTheme';
 
 // types
 import { type Router } from '@toolpad/core';
 import { type Session } from '@toolpad/core/AppProvider';
 
-import { useUsersManagement } from '../../../hooks/useUserManagement';
-
 export default function Dashboard() {
-    const { user: suppabaseUser } = useUsersManagement();
     const { user: clerkUser } = useUser();
 
     const navigate = useNavigate();
@@ -70,7 +67,7 @@ export default function Dashboard() {
             authentication={authentication}
             navigation={DASHBOARD_NAVIGATION}
             router={router}
-            theme={appTheme}>
+            theme={dashboardTheme}>
             <DashboardProvider>
                 <NotificationsProvider slotProps={{ snackbar: { anchorOrigin: { vertical: 'bottom', horizontal: 'right' } } }}>
                     <DashboardLayout

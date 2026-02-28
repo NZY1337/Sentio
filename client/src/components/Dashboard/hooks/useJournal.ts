@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { journalService } from '../../../services/journal';
-import type { CreateJournalEntryDto, UpdateJournalEntryDto, PaginationParams } from '../../../services/journal/index';
+import type { CreateJournalEntryDto, UpdateJournalEntryDto, PaginationParams, JournalSearchDto } from '../../../services/journal/index';
 import { useAuth } from '@clerk/clerk-react';
 
 export const useJournalEntries = (paginationParams?: PaginationParams) => {
@@ -70,6 +70,18 @@ export const useDeleteJournalEntry = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['journalEntries'] });
+        },
+    });
+};
+
+export const useJournalSemanticSearch = () => {
+    const { getToken } = useAuth();
+
+    return useMutation({
+        mutationFn: async (data: JournalSearchDto) => {
+            const token = await getToken();
+            if (!token) throw new Error('No authentication token');
+            return journalService.searchJournalEntries(data, token);
         },
     });
 };

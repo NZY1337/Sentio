@@ -13,6 +13,24 @@ const extensions = [TextStyleKit, StarterKit]
 
 import { useRef } from 'react';
 
+const buildAnalysisFeedback = (response: any) => {
+    const analysis = response?.journalEntry?.analysis;
+    const aiStatus = response?.aiAnalysisStatus;
+
+    if (!analysis) {
+        if (aiStatus?.status === 'pending' && aiStatus?.message) {
+            return `Journal submitted. AI analysis pending: ${aiStatus.message}`;
+        }
+        return 'Journal submitted. AI analysis is pending.';
+    }
+
+    const emotion = analysis.dominantEmotion || 'neutral';
+    const risk = typeof analysis.riskScore === 'number' ? analysis.riskScore : 'N/A';
+    const distortion = analysis.cognitiveDistortion || 'none';
+
+    return `AI: emotion ${emotion}, risk ${risk}, distortion ${distortion}.`;
+};
+
 export default function JournalEditor({ initialContent, editingId, onSaveOrSubmit, actionSlot }: { initialContent?: string | null, editingId?: string | null, onSaveOrSubmit?: () => void, actionSlot?: React.ReactNode }) {
     const [feedback, setFeedback] = useState<string | null>(null);
     const createJournalEntry = useCreateJournalEntry();
@@ -57,15 +75,15 @@ export default function JournalEditor({ initialContent, editingId, onSaveOrSubmi
         const content = editor.getJSON();
         try {
             if (editingId) {
-                await updateJournalEntry.mutateAsync({ journalEntryId: editingId, data: { content: JSON.stringify(content), status: 'submitted' } });
-                setFeedback('Jurnal actualizat!');
+                const response = await updateJournalEntry.mutateAsync({ journalEntryId: editingId, data: { content: JSON.stringify(content), status: 'submitted' } });
+                setFeedback(buildAnalysisFeedback(response));
             } else {
-                await createJournalEntry.mutateAsync({ content: JSON.stringify(content), status: 'submitted' });
-                setFeedback('Jurnal salvat!');
+                const response = await createJournalEntry.mutateAsync({ content: JSON.stringify(content), status: 'submitted' });
+                setFeedback(buildAnalysisFeedback(response));
             }
             if (onSaveOrSubmit) onSaveOrSubmit();
         } catch (e) {
-            setFeedback('Failed to submit.');
+            setFeedback('Failed to submit for AI analysis.');
         }
     };
 

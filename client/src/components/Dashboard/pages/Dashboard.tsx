@@ -8,7 +8,7 @@ import { useDashboardContext } from '../context/dashboardContext';
 // components
 import { Typography, Card, CardContent, Box, Stack, Grid } from "@mui/material";
 import ConsentModal from '../../ConsentModal/index.';
-import HeroCardWithImage, { HeroCardWithImage2 } from '../../HeroCard';
+import ImageCard from '../../ImageCard';
 import MoodTrendChart from '../components/Stats/Charts';
 import Stats from '../components/Stats';
 
@@ -48,13 +48,13 @@ const DashboardMain: React.FC = () => {
         <>
             {!user?.consent && (
                 <Grid container spacing={2} alignItems="stretch">
-                    <Grid size={7} sx={{ display: "flex" }}>
+                    <Grid size={{ xl: 6 }} sx={{ display: "flex" }}>
                         <ConsentModal open={isConsentModalOpen} setOpen={setIsConsentModalOpen} />
-                        <HeroCardWithImage onClick={handleConsentModal} />
+                        <ImageCard onClick={handleConsentModal} />
                     </Grid>
 
-                    <Grid size={5} sx={{ display: "flex" }}>
-                        <MoodTrendChart />
+                    <Grid size={{ xl: 6 }} sx={{ display: "flex" }}>
+                        <MoodTrendChart journalEntries={journalEntries} />
                     </Grid>
                 </Grid>
             )}
@@ -62,12 +62,42 @@ const DashboardMain: React.FC = () => {
             {user?.consent && (
                 <>
                     <Grid container spacing={2}>
-                        <Grid size={{ xl: 7 }}>
-                            <HeroCardWithImage2 />
+                        <Grid size={{ xl: 7, lg: 12 }} sx={{ display: "flex" }}>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                }}>
+                                <Box
+                                    sx={(theme) => ({
+                                        p: 2,
+                                        borderRadius: 4,
+                                        // background: theme.palette.background.paper,
+                                        border: `1px solid ${theme.palette.divider}`,
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center center",
+                                    })}>
+                                    <Box sx={{ position: "relative", zIndex: 1 }}>
+                                        <Typography sx={(theme) => ({
+                                            fontWeight: 400,
+                                            mb: 1,
+                                            fontSize: 30,
+                                        })}>
+                                            Bine ai venit, Andrei! 👋
+                                        </Typography>
+                                        <Typography variant="body1" width="75%" mt={1} sx={(theme) => ({
+                                            color: theme.palette.text.secondary,
+                                        })}>
+                                            We value your privacy and are committed to protecting your personal data. Our application collects and processes data solely for the purpose of providing you with a personalized journaling experience.
+                                        </Typography>
+                                    </Box>
+                                    <ModernCardGrid />
+                                </Box>
+                            </Box>
                         </Grid>
 
                         <Grid size={{ xl: 5, lg: 12 }}>
-                            <MoodTrendChart />
+                            <MoodTrendChart journalEntries={journalEntries} />
                         </Grid>
                     </Grid>
 
@@ -130,10 +160,10 @@ export const ModernCardGrid = () => {
                             })}>
                                 PLAN
                             </Typography>
-                            <Typography variant="h5" sx={(theme) => ({
+                            <Typography variant="h5" sx={{
                                 fontWeight: 600,
                                 mt: 1,
-                            })}>
+                            }}>
                                 {card.title}
                             </Typography>
                         </Box>
@@ -146,9 +176,9 @@ export const ModernCardGrid = () => {
                                     {card.desc}
                                 </Typography>
 
-                                <Typography variant="h3" sx={(theme) => ({
+                                <Typography variant="h3" sx={{
                                     fontWeight: 800,
-                                })}>
+                                }}>
                                     {card.price}
                                     <Typography
                                         component="span"

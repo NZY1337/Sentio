@@ -17,12 +17,14 @@ export default function Stats({ journalEntries, onEdit, onDelete, editMode = fal
                 const title = extractTitle(entry.content);
                 const formattedDate = formatDate(entry.createdAt);
                 const dominantEmotion = entry.analysis?.dominantEmotion || "N/A";
-                const riskScore = entry.analysis?.riskScore || 0;
+                const riskScore = typeof entry.analysis?.riskScore === "number" ? entry.analysis.riskScore : null;
+                const cognitiveDistortion = entry.analysis?.cognitiveDistortion || "N/A";
                 const status = entry.status || "draft";
 
                 return (
                     <Grid size={{ lg: 6 }} key={entry.id}>
                         <RenderStats
+                            journalEntries={journalEntries}
                             title={title}
                             onDelete={onDelete}
                             onEdit={onEdit}
@@ -31,6 +33,7 @@ export default function Stats({ journalEntries, onEdit, onDelete, editMode = fal
                             entry={entry}
                             status={status}
                             date={formattedDate}
+                            cognitiveDistortion={cognitiveDistortion}
                             dominantEmotion={dominantEmotion} />
                     </Grid>
                 );

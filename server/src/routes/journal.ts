@@ -6,12 +6,14 @@ import {
     getJournalEntryById,
     createJournalEntry,
     updateJournalEntry,
-    deleteJournalEntry
+    deleteJournalEntry,
+    searchJournalEntries,
 } from "../controllers/journal";
 
 const journalRouter: Router = Router();
 
 journalRouter.get("/", authorize("read"), errorHandler(getJournalEntries));
+journalRouter.post("/search", authorize("read"), errorHandler(searchJournalEntries));
 journalRouter.get("/:journalEntryId", authorize("read"), errorHandler(getJournalEntryById));
 journalRouter.post("/", authorize("create"), errorHandler(createJournalEntry));
 journalRouter.put(

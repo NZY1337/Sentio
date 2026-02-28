@@ -1,23 +1,22 @@
 import { type Theme, type Components } from '@mui/material/styles';
 
 export const navigationCustomization: Components<Theme> = {
-    MuiAppBar: {
-        styleOverrides: {
-            root: ({ ownerState }) => ({
-                boxShadow: 'none',
-                backgroundColor: 'transparent !important',
-                backgroundImage: 'none',
-                // Only apply absolute positioning to dashboard AppBar (from Toolpad)
-                ...(ownerState.position === 'fixed' && {
-                    position: 'absolute',
-                }),
-            }),
-        },
-    },
+
     MuiDrawer: {
         styleOverrides: {
-            paper: () => ({
-                backgroundColor: 'transparent',
+            paper: ({ theme }: { theme: Theme }) => ({
+                '& .MuiListItemButton-root.Mui-selected': {
+                    backgroundColor: theme.palette.action.selected,
+                },
+                '& .MuiListItemButton-root.Mui-selected:hover': {
+                    backgroundColor: theme.palette.action.selected,
+                },
+                '& .MuiListItemButton-root.Mui-selected .MuiListItemText-primary, & .MuiListItemButton-root.Mui-selected .MuiTypography-root': {
+                    color: theme.palette.warning.light
+                },
+                '& .MuiListItemButton-root.Mui-selected .MuiListItemIcon-root, & .MuiListItemButton-root.Mui-selected .MuiSvgIcon-root': {
+                    color: theme.palette.warning.light
+                },
             }),
         },
     },
@@ -38,11 +37,8 @@ export const navigationCustomization: Components<Theme> = {
                     }),
                 },
                 '& .MuiLink-root': {
-                    color: 'white',
+                    color: theme.palette.grey[100],
                     textDecoration: 'none',
-                    '&:hover': {
-                        color: 'rgba(255,255,255,0.8)',
-                    },
                 },
                 '&:hover': {
                     backgroundColor: 'transparent',

@@ -12,8 +12,15 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import type { JournalEntry } from "../../../../types/journal";
 
-interface StatsProps {
-    journalEntries: JournalEntry[];
+interface RenderStatsProps {
+    journalEntries?: JournalEntry[];
+    entry: JournalEntry;
+    status: string;
+    date: string;
+    dominantEmotion: string;
+    riskScore: number | null;
+    cognitiveDistortion: string;
+    title: string;
     editMode?: boolean;
     onEdit?: (entry: JournalEntry) => void;
     onDelete?: (entryId: string) => void;
@@ -25,11 +32,12 @@ export default function RenderStats({
     date,
     dominantEmotion,
     riskScore,
+    cognitiveDistortion,
     title,
     editMode,
     onEdit,
     onDelete
-}: StatsProps & { entry: JournalEntry; status: string; date: string; dominantEmotion: string; riskScore: number; title: string }) {
+}: RenderStatsProps) {
     return (
         <Card
             sx={(theme) => ({
@@ -78,9 +86,16 @@ export default function RenderStats({
                             </Typography>
                             <Typography sx={(theme) => ({
                                 fontWeight: 700, ml: 0.75,
-                                color: riskScore >= 7 ? theme.palette.journal.risk.high : riskScore >= 5 ? theme.palette.journal.risk.medium : theme.palette.journal.risk.low,
+                                color:
+                                    typeof riskScore === "number"
+                                        ? riskScore >= 7
+                                            ? theme.palette.journal.risk.high
+                                            : riskScore >= 5
+                                                ? theme.palette.journal.risk.medium
+                                                : theme.palette.journal.risk.low
+                                        : theme.palette.text.secondary,
                             })}>
-                                {riskScore.toFixed(1)}
+                                {typeof riskScore === "number" ? riskScore.toFixed(1) : "-"}
                             </Typography>
                         </Box>
 
@@ -122,6 +137,11 @@ export default function RenderStats({
                 })}>
                     {entry.analysis ? "AI analyzed" : "Pending AI analysis"}
                 </Typography>
+                {entry.analysis && (
+                    <Typography variant="caption" display="block" sx={(theme) => ({ color: theme.palette.text.secondary, mt: 0.5 })}>
+                        Distortion: {cognitiveDistortion}
+                    </Typography>
+                )}
 
                 {/* Actions */}
                 {editMode && (

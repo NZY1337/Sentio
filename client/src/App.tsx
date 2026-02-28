@@ -11,16 +11,14 @@ import Journal from './components/Dashboard/pages/Journal';
 import EditJournal from './components/Dashboard/pages/EditJournal';
 import Profile from './components/Dashboard/pages/Profile';
 import { Users } from './components/Dashboard/pages/Users';
-import { CssBaseline } from '@mui/material';
 import ProtectedRoute from './components/Protected/ProtectedRoute';
-
+import { PublicThemeProvider } from './context/AppTheme';
 
 function App() {
     return (
         <Router>
-            <CssBaseline />
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<PublicThemeProvider><Home /></PublicThemeProvider>} />
                 <Route path="/" element={<ProtectedRoute />}>
                     <Route path="dashboard" element={<Dashboard />}>
                         <Route index element={<DashboardMain />} />
@@ -31,7 +29,7 @@ function App() {
                         <Route path="users" element={<Users />} />
                     </Route>
                 </Route>
-                <Route path="*" element={<NotFoundPage />} />
+                <Route path="*" element={<PublicThemeProvider><NotFoundPage /></PublicThemeProvider>} />
             </Routes>
         </Router>
     )

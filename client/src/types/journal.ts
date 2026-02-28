@@ -5,6 +5,7 @@ export interface JournalEntry {
     userId: string;
     content: string;
     status?: string;
+    aiAnalysisStatus?: "completed" | "pending" | "not_requested";
     createdAt: string;
     embedding: number[];
     analysis?: EmotionalAnalysis;

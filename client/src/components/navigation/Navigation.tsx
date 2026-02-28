@@ -9,10 +9,6 @@ import { styled } from '@mui/material/styles';
 import Logo from '../Logo/Logo';
 
 const AppBarContainer = styled(AppBar)(({ theme }) => ({
-    boxShadow: 'none',
-    backgroundColor: 'transparent',
-    backgroundImage: 'none',
-
     '.MuiToolbar-root': {
         display: 'flex',
         justifyContent: 'space-between',
@@ -33,7 +29,7 @@ const AppBarContainer = styled(AppBar)(({ theme }) => ({
 
 const Navigation: React.FC = () => {
     return (
-        <AppBarContainer>
+        <AppBarContainer className="home-nav" position="fixed">
             <Container>
                 <MenuDrawer />
                 <Toolbar sx={{ height: '80px', mt: 2, borderRadius: 2 }}>

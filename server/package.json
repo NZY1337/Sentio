@@ -6,7 +6,8 @@
     "scripts": {
         "test": "vitest",
         "test:integration": "vitest --config vitest.integration.config.ts",
-        "start": "npx nodemon",
+        "dev": "npx nodemon",
+        "sanity:search": "npx tsx scripts/sanityJournalSearch.ts",
         "migrate": "npx prisma migrate dev",
         "studio": "npx prisma studio",
         "generate": "npx prisma generate",

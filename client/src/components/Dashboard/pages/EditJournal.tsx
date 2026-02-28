@@ -2,15 +2,16 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Button, Typography, CircularProgress, Alert } from '@mui/material';
 import JournalEditor from '../components/Editor/index';
-import { useDashboardContext } from '../context/dashboardContext';
+import { useJournalEntry } from '../hooks/useJournal';
 
 const EditJournal: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { journalEntries, isJournalsLoading } = useDashboardContext();
+    const { data, isLoading, error } = useJournalEntry(id || '');
+    const currentJournal = data?.journalEntry;
 
     // Show loading spinner while data is being fetched
-    if (isJournalsLoading) {
+    if (isLoading) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
                 <CircularProgress />
@@ -18,8 +19,22 @@ const EditJournal: React.FC = () => {
         );
     }
 
-    // Find the journal entry
-    const currentJournal = journalEntries.find(entry => entry.id === id);
+    if (error) {
+        return (
+            <Box p={3}>
+                <Alert severity="error">
+                    {(error as Error).message || 'Failed to load journal entry'}
+                </Alert>
+                <Button
+                    variant="contained"
+                    onClick={() => navigate('/dashboard/journals')}
+                    sx={{ mt: 2 }}
+                >
+                    Back to Journals
+                </Button>
+            </Box>
+        );
+    }
 
     // If journal not found after loading is complete
     if (!currentJournal) {

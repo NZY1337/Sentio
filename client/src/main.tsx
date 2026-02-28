@@ -5,7 +5,6 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import App from './App.tsx'
 
 // contexts
-import AppThemeProvider from './context/AppTheme.tsx';
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from './context/TanstackQuery.tsx'
 import { ClerkProvider } from '@clerk/clerk-react'
@@ -21,11 +20,9 @@ createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
             <QueryClientProvider client={queryClient}>
-                <AppThemeProvider>
-                    <SkeletonTheme baseColor="#202020" highlightColor="#444">
-                        <App />
-                    </SkeletonTheme>
-                </AppThemeProvider>
+                <SkeletonTheme baseColor="#202020" highlightColor="#444">
+                    <App />
+                </SkeletonTheme>
             </QueryClientProvider>
         </ClerkProvider>
     </StrictMode >,

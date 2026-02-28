@@ -1,22 +1,13 @@
 import { alpha, type Theme, type Components } from '@mui/material/styles';
-import { toggleButtonGroupClasses } from '@mui/material/ToggleButtonGroup';
+import type { } from '@mui/x-data-grid/themeAugmentation';
 import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
-import { brand } from '../themePrimitives';
 
 // colors
 import { grey } from '@mui/material/colors';
 
-
 export const inputsCustomizations: Components<Theme> = {
-    MuiButtonBase: {
-        styleOverrides: {
-            root: () => ({
-
-            }),
-        },
-    },
     MuiButton: {
         styleOverrides: {
             root: ({ theme }: { theme: Theme }) => ({
@@ -37,9 +28,6 @@ export const inputsCustomizations: Components<Theme> = {
                             '&:hover': {
                                 backgroundImage: 'unset',
                                 boxShadow: 'none',
-                            },
-                            '&:active': {
-                                // backgroundColor: grey[400],
                             },
                         },
                     },
@@ -70,25 +58,6 @@ export const inputsCustomizations: Components<Theme> = {
             }),
         },
     },
-    MuiIconButton: {
-        styleOverrides: {
-        },
-    },
-    MuiToggleButtonGroup: {
-        // styleOverrides: {
-        //     root: () => ({
-        //         borderRadius: '10px',
-        //         [`& .${toggleButtonGroupClasses.selected}`]: {
-        //             color: '#fff',
-        //         },
-        //         boxShadow: `0 4px 16px ${alpha(brand[700], 0.5)}`,
-        //     }),
-        // },
-    },
-    MuiToggleButton: {
-        styleOverrides: {
-        },
-    },
     MuiCheckbox: {
         defaultProps: {
             disableRipple: true,
@@ -101,16 +70,6 @@ export const inputsCustomizations: Components<Theme> = {
         styleOverrides: {
         },
     },
-    MuiInputBase: {
-        styleOverrides: {
-            root: () => ({
-            }),
-        },
-    },
-    MuiOutlinedInput: {
-        styleOverrides: {
-        },
-    },
     MuiInputAdornment: {
         styleOverrides: {
             root: ({ theme }: { theme: Theme }) => ({
@@ -118,31 +77,17 @@ export const inputsCustomizations: Components<Theme> = {
             }),
         },
     },
-    MuiFormLabel: {
-        styleOverrides: {
-            root: ({ theme }: { theme: Theme }) => ({
-                typography: theme.typography.caption,
-                marginBottom: 8,
-            }),
-        },
-    },
-    MuiFormHelperText: {
-        styleOverrides: {
-            root: ({ theme }: { theme: Theme }) => ({
-                color: '#fff',
-                marginLeft: 0,
-                ...theme.applyStyles('light', {
-                    color: theme.palette.text.secondary,
-                }),
-            }),
-        },
-    },
-    MuiTypography: {
+    MuiDataGrid: {
         styleOverrides: {
             root: () => ({
                 backgroundColor: 'unset',
+                '& .MuiDataGrid-cell:focus, & .MuiDataGrid-cell:focus-within': {
+                    outline: 'none',
+                },
+                '& .MuiDataGrid-columnHeader:focus, & .MuiDataGrid-columnHeader:focus-within': {
+                    outline: 'none',
+                },
             }),
-        }
-    },
-};
-
+        },
+    }
+}

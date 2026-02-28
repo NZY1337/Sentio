@@ -3,7 +3,6 @@ import ArrowRight from '@mui/icons-material/ArrowRight';
 import Navigation from '../navigation/Navigation';
 import './Homepage';
 import { TypeAnimation } from 'react-type-animation';
-import imageUrl from '../../assets/dashboard.png';
 // https://images.unsplash.com/photo-1606744888344-493238951221?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
 
 const Hero = () => {
@@ -47,7 +46,7 @@ const Hero = () => {
                                 />
                             </Typography>
 
-                            <Typography variant="body2" fontSize={40} sx={{ mb: 3, borderRadius: '8px', }}>
+                            <Typography variant="body2" fontSize={40} sx={{ mb: 3, borderRadius: '8px', lineHeight: 1.2, fontWeight: '500', }}>
                                 Jurnal pentru sănătatea ta emoțională.
                             </Typography>
 
