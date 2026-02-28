@@ -28,7 +28,7 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: npm test -- --runInBand
+        run: npm test -- --run
 
   server-sanity-search:
     name: Server Sanity Search
@@ -45,6 +45,7 @@ jobs:
       FORWARDED_PORT: "3010"
       JWT_SECRET: "ci-dummy"
       JWT_REFRESH_SECRET: "ci-dummy"
+      
       SMTP_PASSWORD: "ci-dummy"
       AWS_BUCKET_NAME: "ci-dummy"
       AWS_BUCKET_REGION: "eu-west-3"
