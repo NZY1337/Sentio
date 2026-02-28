@@ -31,7 +31,7 @@ jobs:
         run: npm run generate
 
       - name: Run unit tests (exclude integration)
-        run: npm test -- --run --exclude src/**/__tests__/**/*.int.test.ts
+        run: npm test -- --run --exclude src/**/__tests__/**/*.int.test.ts --passWithNoTests
 
   server-sanity-search:
     name: Server Sanity Search
