@@ -71,7 +71,7 @@ export const clerkWebhook = async (req: Request, res: Response) => {
                 };
 
                 await prismaClient.user.upsert({
-                    where: { email: user.email },
+                    where: { id: user.id },
                     create: { ...user },
                     update: {
                         id: user.id,

@@ -14,7 +14,7 @@ type OwnerResolver = (req: Request) => Promise<string | null>;
 const rolePermissions: Record<Role, ActionRole[]> = {
     [Role.admin]: ["create", "update", "delete", "read"],
     [Role.editor]: ["update", "read"],
-    [Role.user]: ["read"],
+    [Role.user]: ["create", "update", "delete", "read"],
 };
 
 const normalizeRoles = (rawRole?: string | string[] | null): Role[] => {

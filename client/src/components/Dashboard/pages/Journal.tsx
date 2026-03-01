@@ -80,8 +80,8 @@ const JournalPage: React.FC = () => {
 
                 <Card sx={{ borderRadius: 3, border: '1px solid', borderColor: 'divider' }}>
                     <CardContent>
-                        <Typography variant="h6" mb={1}>Journal Memory Search</Typography>
-                        <Typography variant="body2" color="text.secondary" mb={2}>
+                        <Typography variant="body2" fontSize={30} mb={2}>Journal Memory Search</Typography>
+                        <Typography variant="body2" color="text.secondary" mb={2} width={{ xs: '100%', md: '75%' }}>
                             Întreabă jurnalul tău lucruri precum „când m-am simțit vesel?” și primești răspuns din intrările salvate.
                         </Typography>
 

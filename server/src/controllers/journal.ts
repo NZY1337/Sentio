@@ -145,9 +145,11 @@ export const getJournalEntryById = async (req: Request, res: Response) => {
 export const createJournalEntry = async (req: Request, res: Response) => {
     const { userId } = req.auth;
     const validation = JournalEntryValidator.safeParse(req.body);
+
     if (!validation.success) {
         return res.status(400).json({ error: validation.error.flatten() });
     }
+
     let entry = await prismaClient.journalEntry.create({
         data: {
             userId,
@@ -177,10 +179,22 @@ export const createJournalEntry = async (req: Request, res: Response) => {
 
 export const updateJournalEntry = async (req: Request, res: Response) => {
     const { journalEntryId } = req.params;
+
     const validation = JournalEntryValidator.partial().safeParse(req.body);
+
     if (!validation.success) {
         return res.status(400).json({ error: validation.error.flatten() });
     }
+
+    const existingEntry = await prismaClient.journalEntry.findFirst({
+        where: { id: journalEntryId, userId: req.auth.userId },
+        include: { analysis: true },
+    });
+
+    if (!existingEntry) {
+        return res.status(404).json({ error: "Journal entry not found" });
+    }
+
     let entry = await prismaClient.journalEntry.update({
         where: { id: journalEntryId },
         data: {
@@ -212,6 +226,16 @@ export const updateJournalEntry = async (req: Request, res: Response) => {
 
 export const deleteJournalEntry = async (req: Request, res: Response) => {
     const { journalEntryId } = req.params;
+
+    const existingEntry = await prismaClient.journalEntry.findFirst({
+        where: { id: journalEntryId, userId: req.auth.userId },
+        select: { id: true },
+    });
+
+    if (!existingEntry) {
+        return res.status(404).json({ error: "Journal entry not found" });
+    }
+
     await prismaClient.journalEntry.delete({
         where: { id: journalEntryId },
     });

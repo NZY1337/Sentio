@@ -55,10 +55,18 @@ const migrateOnce = () => {
 beforeAll(() => {
     ensureTestDb();
     migrateOnce();
-});
+}, 60000);
 
 beforeEach(async () => {
-    // With cascade delete, just delete users and projects will be automatically removed
+    await prismaClient.emotionalAnalysis.deleteMany({});
+    await prismaClient.journalEntry.deleteMany({});
+    await prismaClient.alert.deleteMany({});
+
+    const projectDelegate = (prismaClient as any).project;
+    if (projectDelegate?.deleteMany) {
+        await projectDelegate.deleteMany({});
+    }
+
     await prismaClient.user.deleteMany({});
 });
 
